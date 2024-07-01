@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "cw6-django"
+version = "0.1.0"
+description = "Course work 6 Django"
+authors = ["Evgeny Egorov <EAEgorov42@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "4.2"
+psycopg2-binary = "^2.9.9"
+pillow = "^10.3.0"
+static = "^1.1.1"
+ipython = "^8.24.0"
+black = "^24.4.2"
+django-debug-toolbar = "^4.3.0"
+pytils = "^0.4.1"
+python-dotenv = "^1.0.1"
+redis = "^5.0.7"
+flake8 = "^7.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
