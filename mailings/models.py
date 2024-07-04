@@ -74,8 +74,8 @@ class MailingAttempt(models.Model):
 
     class Meta:
         db_table = "MailingAttempt"
-        verbose_name = "Отчет рассылки"
-        verbose_name_plural = "Отчеты рассылки"
+        verbose_name = "Отчет о рассылке"
+        verbose_name_plural = "Отчеты о рассылках"
         ordering = ("status", "answer", "owner_mailing",)
 
     def __str__(self):
