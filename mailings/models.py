@@ -66,11 +66,12 @@ class Mailing(models.Model):
 
 
 class MailingAttempt(models.Model):
-    """Модель для блога"""
+    """Модель для отчета о рассылках"""
     datetime = models.DateTimeField(auto_now=True, verbose_name="Дата и время рассылки", )
     status = models.CharField(max_length=120, verbose_name="Статус рассылки", )
     answer = models.TextField(verbose_name="Ответ сервера", **NULLABLE, )
-    owner_mailing = models.ForeignKey(User, verbose_name="Владелец рассыылки", on_delete=models.SET_NULL, **NULLABLE)
+    mailing = models.ForeignKey(Mailing, verbose_name="Рассылка", on_delete=models.SET_NULL, )
+    owner_mailing = models.ForeignKey(User, verbose_name="Владелец рассылки", on_delete=models.SET_NULL, **NULLABLE)
 
     class Meta:
         db_table = "MailingAttempt"
