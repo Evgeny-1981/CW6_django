@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from users.models import User
-from catalog.forms import FormMixin
+from mailings.forms import FormMixin
 
 
 class UserRegisterForm(FormMixin, UserCreationForm):

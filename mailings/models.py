@@ -32,7 +32,8 @@ class Message(models.Model):
     """Модель для сообщений"""
     subject = models.CharField(max_length=120, verbose_name="Тема письма", )
     message = models.TextField(verbose_name="Сообщение", )
-    owner_message = models.ForeignKey(User, verbose_name="Автор сообщения", on_delete=models.SET_NULL, **NULLABLE, )
+    owner_message = models.ForeignKey(User, verbose_name="Автор сообщения", related_name="messages",
+                                      on_delete=models.SET_NULL, **NULLABLE, )
 
     class Meta:
         db_table = "message"
@@ -57,9 +58,10 @@ class Mailing(models.Model):
 
     class Meta:
         db_table = "mailing"
-        verbose_name = "Рассылка"
+        verbose_name = "Рассылку"
         verbose_name_plural = "Рассылки"
         ordering = ("datetime", "status",)
+        permissions = Permissions
 
     def __str__(self):
         return f"Рассылка: {self.pk}. Время: {self.datetime}. Статус: {self.status}"
@@ -70,7 +72,7 @@ class MailingAttempt(models.Model):
     datetime = models.DateTimeField(auto_now=True, verbose_name="Дата и время рассылки", )
     status = models.CharField(max_length=120, verbose_name="Статус рассылки", )
     answer = models.TextField(verbose_name="Ответ сервера", **NULLABLE, )
-    mailing = models.ForeignKey(Mailing, verbose_name="Рассылка", on_delete=models.SET_NULL, )
+    mailing = models.ForeignKey(Mailing, verbose_name="Рассылка", on_delete=models.CASCADE, )
     owner_mailing = models.ForeignKey(User, verbose_name="Владелец рассылки", on_delete=models.SET_NULL, **NULLABLE)
 
     class Meta:
