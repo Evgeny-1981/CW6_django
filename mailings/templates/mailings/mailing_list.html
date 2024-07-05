@@ -1,0 +1,50 @@
+{% extends 'mailings/index.html' %}
+{% load my_tags %}
+{% load static %}
+{% block content %}
+
+<div class="row text-center">
+    {% if user.is_authenticated %}
+    <a class="btn mb-3 btn-lg btn-block btn-outline-primary" href="{% url 'mailings:mailing_create'%}"
+       role="button">Добавить рассылку</a>
+    {% else %}
+    <h3>Для добавления рассылки выполните вход</h3>
+    {% endif %}
+    <div class="container">
+        <div class="row text-center">
+            {% for object in object_list %}
+            <div class="col-4">
+
+                <div class="card mb-4 box-shadow">
+                    {% if object.image %}
+                    <img src="{{ object.image | media_filter }}">
+                    {% else %}
+                    <img src="{% static 'images/default.jpg' %}">
+                    {% endif %}
+                    <div class="card-header">
+                        <h6 class="my-0 font-weight-normal">{{object.message | truncatechars:40}}</h6>
+                        <h6 class="my-0 font-weight-normal">{{object.is_active}}</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-body">
+                            <a class="btn mb-1 btn-lt btn btn-primary" role="button"
+                               href="{% url 'mailings:mailing_info' object.pk %}">Подробнее</a>
+                            {% if perms.mailing.View_any_mailing_lists and perms.mailing.Disable_mailing_lists or user
+                            == object.owner %}
+                            <a class="btn mb-1 btn-lt btn btn-primary" role="button"
+                               href="{% url 'mailings:mailing_update' object.pk %}">Редактировать</a>
+
+                            <a class="btn mb-1 btn-lt btn btn-danger" role="button"
+                               href="{% url 'mailings:mailing_delete' object.pk %}">Удалить</a>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

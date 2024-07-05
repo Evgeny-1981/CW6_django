@@ -42,7 +42,7 @@ def email_verification(request, token):
 class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
-    success_url = reverse_lazy('catalog:product_list')
+    success_url = reverse_lazy('mailings:product_list')
 
     def get_object(self, queryset=None):
         return self.request.user

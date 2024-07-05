@@ -20,7 +20,7 @@ class Client(models.Model):
 
     class Meta:
         db_table = "client"
-        verbose_name = "Клиент"
+        verbose_name = "Клиента"
         verbose_name_plural = "Клиенты"
         ordering = ("email", "owner_client",)
 
@@ -57,7 +57,7 @@ class Mailing(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Актуальность рассылки")
 
     class Meta:
-        db_table = "mailing"
+        db_table = "mailings"
         verbose_name = "Рассылку"
         verbose_name_plural = "Рассылки"
         ordering = ("datetime", "status",)
