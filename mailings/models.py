@@ -57,7 +57,7 @@ class Mailing(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Актуальность рассылки")
 
     class Meta:
-        db_table = "mailings"
+        db_table = "mailing"
         verbose_name = "Рассылку"
         verbose_name_plural = "Рассылки"
         ordering = ("datetime", "status",)

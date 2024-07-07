@@ -23,9 +23,9 @@ class MailingListView(ListView):
     #     if user.has_perm('mailings.View_any_mailing_lists'):
     #         queryset = queryset.all()
     #         return queryset
-    #     else:
-    #         queryset = queryset.filter(published=True)
-    #         return queryset
+        # else:
+        #     queryset = queryset.filter(published=True)
+        #     return queryset
 
     # def get_context_data(self, *args, **kwargs):
     #     """Метод для получения версии продукта и вывода только активной версии"""
