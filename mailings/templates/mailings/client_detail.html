@@ -1,0 +1,25 @@
+{% extends 'mailings/index.html' %}
+{% load my_tags %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h5 class="my-0 font-weight-normal">{{ client.email }}</h5>
+                    <h6 class="my-0 font-weight-normal">{{ client.fio }}</h6>
+                    <h6 class="my-0 font-weight-normal">{{ client.comment }}</h6>
+
+
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-primary" role="button"
+                       href="{% url 'mailings:clients_list' %}">Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

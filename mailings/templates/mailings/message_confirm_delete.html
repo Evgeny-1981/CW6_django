@@ -1,4 +1,4 @@
-{% extends 'catalog/home.html' %}
+{% extends 'mailings/index.html' %}
 {% load static %}
 {% block content %}
 <div class="container">
@@ -7,8 +7,9 @@
             <form class="row" method="post" enctype="multipart/form-data">
                 <div class="card-body">
                     {% csrf_token %}
-                    <h5 class="my-0 font-weight-normal">Удалить продукт - {{ object.name }}</h5>
-                    <a class="btn btn-primary" role="button" href="{% url 'catalog:product_list' %}">Отмена</a>
+
+                    <h5 class="my-0 font-weight-normal">Удалить сообщение - {{ object.pk }}</h5>
+                    <a class="btn btn-primary" role="button" href="{% url 'mailings:messages_list' %}">Отмена</a>
                     <button type="submit" class="btn btn-danger">Удалить</button>
                 </div>
             </form>
