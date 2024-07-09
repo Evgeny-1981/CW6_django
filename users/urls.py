@@ -13,7 +13,9 @@ from django.contrib.auth.views import (
 
 app_name = UsersConfig.name
 urlpatterns = [
-    path('users/', UserListView.as_view, name='users_list'),
+    path('users_list', UserListView.as_view(), name='users_list'),
+    # path('users_list', UserListView.as_view(), name='users_list'),
+    # path('users_list', UserListView.as_view(), name='users_list'),
     path('login/', LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='mailings/index.html'), name='logout'),
     path('register/', RegisterView.as_view(), name='register'),

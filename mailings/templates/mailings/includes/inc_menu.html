@@ -6,7 +6,7 @@
         {% if user.is_authenticated %}
         {% if perms.mailings.View_any_mailing_lists and perms.mailings.Disable_mailing_lists and perms.users.View_the_list_of_service_users and perms.users.Block_users_of_the_service %}
         <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:mailings_list' %}">Рассылки</a>
-        <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:users_list' %}">Пользователи сервиса</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:users_list' %}">Пользователи сервиса</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:messages_list' %}">Сообщения</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'users:profile' %}">Мой профиль</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'users:logout' %}">Выйти</a>

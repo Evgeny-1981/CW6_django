@@ -9,6 +9,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
+class UserListView(ListView):
+    """Контроллер отображения страницы с сообщениями"""
+    model = User
+
 class RegisterView(CreateView):
     model = User
     form_class = UserRegisterForm
@@ -52,6 +56,3 @@ def send_message(request):
     return render(request, "users/send_message.html")
 
 
-class UserListView(LoginRequiredMixin, ListView):
-    """Контроллер отображения страницы с сообщениями"""
-    model = User
