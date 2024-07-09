@@ -71,7 +71,7 @@ class MessageModeratorForm(FormMixin, ModelForm):
 class MailingForm(FormMixin, ModelForm):
     class Meta:
         model = Mailing
-        fields = '__all__'
+        exclude = ('owner_mailing',)
 
 
 class MailingModeratorForm(FormMixin, ModelForm):
