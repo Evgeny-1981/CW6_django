@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 from users.models import User
 from users.forms import UserRegisterForm, UserProfileForm
 from django.urls import reverse_lazy, reverse
@@ -50,3 +50,8 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 
 def send_message(request):
     return render(request, "users/send_message.html")
+
+
+class UserListView(LoginRequiredMixin, ListView):
+    """Контроллер отображения страницы с сообщениями"""
+    model = User

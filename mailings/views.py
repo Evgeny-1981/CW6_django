@@ -8,6 +8,7 @@ from pytils.translit import slugify
 
 from mailings.forms import MailingForm, ClientForm, MessageForm, MailingModeratorForm
 from mailings.models import Client, Message, Mailing, MailingAttempt
+from users.models import User
 
 
 # from mailings.services import get_categoryes_list
@@ -38,7 +39,7 @@ class MailingListView(ListView):
 
 
 class MailingDetailView(DetailView):
-    """Контроллер для просмотра продукта"""
+    """Контроллер для просмотра рассылки"""
     model = Mailing
 
 
@@ -50,14 +51,17 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
 
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
+    """Контроллер для редактирования рассылки"""
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy("mailings:mailings_list")
 
 
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
+    """Контроллер для удаления рассылки"""
     model = Mailing
     success_url = reverse_lazy("mailings:mailings_list")
+
 
 class ClientListView(ListView):
     """Контроллер отображения страницы с клиентами"""
@@ -96,12 +100,14 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
 
 
 class ClientUpdateView(LoginRequiredMixin, UpdateView):
+    """Контроллер для редактирования рассылки"""
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailings:clients_list')
 
 
 class ClientDeleteView(LoginRequiredMixin, DeleteView):
+    """Контроллер для удаления рассылки"""
     model = Client
     success_url = reverse_lazy('mailings:clients_list')
 
@@ -143,14 +149,21 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
 
 
 class MessageUpdateView(LoginRequiredMixin, UpdateView):
+    """Контроллер для редактирования сообщений"""
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('mailings:messages_list')
 
 
 class MessageDeleteView(LoginRequiredMixin, DeleteView):
+    """Контроллер для удаления сообщений"""
     model = Message
     success_url = reverse_lazy('mailings:messages_list')
+
+
+class UserListView(ListView):
+    """Контроллер отображения страницы с сообщениями"""
+    model = User
 
 
 class ContactsView(TemplateView):

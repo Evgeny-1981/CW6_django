@@ -1,0 +1,32 @@
+{% extends 'mailings/index.html' %}
+{% load my_tags %}
+{% load static %}
+{% block content %}
+
+<div class="row text-center">
+        <div class="container">
+        <div class="row text-center">
+            {% for object in object_list %}
+            <div class="col-4">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h6 class="my-0 font-weight-normal">Имя: {{object.first_name}}</h6>
+                        <h6 class="my-0 font-weight-normal">Фамилия: {{object.last_name}}</h6>
+                        <h6 class="my-0 font-weight-normal">Электронная почта: {{object.email }}</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-body">
+                            <a class="btn mb-1 btn-lt btn btn-primary" role="button"
+                               href="{% url 'users:user_info' object.pk %}">Подробнее</a>
+                            <a class="btn mb-1 btn-lt btn btn-primary" role="button"
+                               href="{% url 'users:user_update' object.pk %}">Редактировать</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
