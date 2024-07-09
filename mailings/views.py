@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
@@ -14,7 +15,7 @@ from users.models import User
 # from mailings.services import get_categoryes_list
 
 
-class MailingListView(ListView):
+class MailingListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с расылками"""
     model = Mailing
 
@@ -38,7 +39,7 @@ class MailingListView(ListView):
     #     return context
 
 
-class MailingDetailView(DetailView):
+class MailingDetailView(LoginRequiredMixin, DetailView):
     """Контроллер для просмотра рассылки"""
     model = Mailing
 
@@ -63,7 +64,7 @@ class MailingDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("mailings:mailings_list")
 
 
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с клиентами"""
     model = Client
 
@@ -112,7 +113,7 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('mailings:clients_list')
 
 
-class MessageListView(ListView):
+class MessageListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с сообщениями"""
     model = Message
 
@@ -161,7 +162,7 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('mailings:messages_list')
 
 
-class UserListView(ListView):
+class UserListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с сообщениями"""
     model = User
 
@@ -175,3 +176,18 @@ class ContactsView(TemplateView):
         message = request.POST.get('message', '')
         print(f'Имя:{name}, тел.:{phone}, сообщение: {message}')
         return HttpResponseRedirect(self.request.path)
+
+
+def mailing_status(request, pk):
+    """
+    Функция для Модератора по смене активности рассылки.
+    """
+    status = get_object_or_404(Mailing, pk=pk)
+    if status.is_active is True:
+        status.is_active = False
+
+    elif status.is_active is False:
+        status.is_active = True
+
+    status.save()
+    return redirect(reverse("mailings:mailings_list"))

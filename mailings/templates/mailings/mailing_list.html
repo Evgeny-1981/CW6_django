@@ -4,20 +4,15 @@
 {% block content %}
 
 <div class="row text-center">
-    {% if user.is_authenticated %}
-    {% if not perms.mailings.View_any_mailing_lists and not perms.mailings.Disable_mailing_lists %}
 
+    {% if not perms.mailings.View_any_mailing_lists and not perms.mailings.Disable_mailing_lists %}
     <a class="btn mb-3 btn-lg btn-block btn-outline-primary" href="{% url 'mailings:mailing_create'%}"
        role="button">Добавить рассылку</a>
- {% endif %}
-    {% else %}
-    <h3>Для добавления рассылки выполните вход</h3>
     {% endif %}
-
-
     <div class="container">
         <div class="row text-center">
             {% for object in object_list %}
+            {% if perms.mailings.View_any_mailing_lists and perms.mailings.Disable_mailing_lists or user == object.owner_mailing %}
             <div class="col-4">
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
@@ -32,22 +27,28 @@
                         <div class="card-body">
                             <a class="btn mb-1 btn-lt btn btn-primary" role="button"
                                href="{% url 'mailings:mailing_info' object.pk %}">Подробнее</a>
-                            {% if perms.mailings.View_any_mailing_lists and perms.mailings.Disable_mailing_lists or user == object.owner_mailing %}
+                            {% if perms.mailings.View_any_mailing_lists and perms.mailings.Disable_mailing_lists %}
+                            {% if object.is_active %}
+                            <a class="btn mb-1 btn-lt btn btn-primary" role="button"
+                              href="{% url 'mailings:mailing_status' object.pk %}">Деактивировать</a>
+                              {% else %}
+                            <a class="btn mb-1 btn-lt btn btn-primary" role="button"
+                              href="{% url 'mailings:mailing_status' object.pk %}">Активировать</a>
+                            {% endif %}
+                            {% endif %}
+                            {% if user == object.owner_mailing %}
                             <a class="btn mb-1 btn-lt btn btn-primary" role="button"
                                href="{% url 'mailings:mailing_update' object.pk %}">Редактировать</a>
                             <a class="btn mb-1 btn-lt btn btn-danger" role="button"
                                href="{% url 'mailings:mailing_delete' object.pk %}">Удалить</a>
                             {% endif %}
                         </div>
-
                     </div>
                 </div>
-
             </div>
+            {% endif %}
             {% endfor %}
-
         </div>
     </div>
-
 </div>
 {% endblock %}

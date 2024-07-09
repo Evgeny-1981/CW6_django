@@ -48,7 +48,7 @@ class Message(models.Model):
 class Mailing(models.Model):
     """Модель для рассылки"""
     datetime = models.DateTimeField(default=timezone.now, verbose_name="Дата и время первой отправки")
-    owner_mailing = models.ForeignKey(User, verbose_name="Автор рассылки", on_delete=models.SET_NULL, **NULLABLE, )
+    owner_mailing = models.ForeignKey(User, related_name="mailings", verbose_name="Автор рассылки", on_delete=models.SET_NULL, **NULLABLE, )
     message = models.ForeignKey(Message, verbose_name="Сообщение рассылки", on_delete=models.CASCADE)
     frequency = models.CharField(max_length=15, choices=Frequency_of_mailing, verbose_name="Периодичность рассылки")
     status = models.CharField(max_length=10, choices=Mailing_status, default="created",
