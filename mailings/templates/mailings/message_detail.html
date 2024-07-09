@@ -7,17 +7,13 @@
         <div class="col-8">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h5 class="my-0 font-weight-normal">{{ message.subject }}</h5>
-                    <h6 class="my-0 font-weight-normal">Владелец рассылки: {{ mailing.owner_mailing }}</h6>
-                    <h6 class="my-0 font-weight-normal">{{ mailing.message }}</h6>
-                    <h6 class="my-0 font-weight-normal">Периодичность рассылки: {{ mailing.frequency }}</h6>
+                    <h5 class="my-0 font-weight-normal">Тема: {{ message.subject }}</h5>
+                    <h6 class="my-0 font-weight-normal">Текст сообщения: {{ message.message }}</h6>
 
 
                 </div>
                 <div class="card-body">
-                    <h6 class="card-title pricing-card-title"> {{ message.status }}</h6>
-                    <h6 class="card-title pricing-card-title"> {{ message.is_active }}</h6>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
+
                     <a class="btn btn-primary" role="button"
                        href="{% url 'mailings:messages_list' %}">Назад</a>
                 </div>
