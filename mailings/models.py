@@ -4,8 +4,8 @@ from users.models import User
 from django.utils import timezone
 
 NULLABLE = {"blank": True, "null": True}
-Frequency_of_mailing = [("Daily", "Ежедневно"), ("Weekly", "Еженедельно"), ("Monthly", "Ежемесячно"), ]
-Mailing_status = [("Completed", "Завершена"), ("Created", "Создана"), ("Launched", "Запущена"), ]
+Frequency_of_mailing = [("Daily", "Ежедневно"), ("Weekly", "Еженедельно"), ("Monthly", "Ежемесячно")]
+Mailing_status = [("Completed", "Завершена"), ("Created", "Создана"), ("Launched", "Запущена")]
 Permissions = [('View_any_mailing_lists', 'Просматривать любые рассылки'),
                ('Disable_mailing_lists', 'Отключать рассылки'), ]
 
@@ -42,14 +42,15 @@ class Message(models.Model):
         ordering = ("subject", "owner_message",)
 
     def __str__(self):
-        return f"Тема сообщения: {self.subject}"
+        return f"{self.subject}"
 
 
 class Mailing(models.Model):
     """Модель для рассылки"""
     datetime = models.DateTimeField(default=timezone.now, verbose_name="Дата и время первой отправки")
-    owner_mailing = models.ForeignKey(User, related_name="mailings", verbose_name="Автор рассылки", on_delete=models.SET_NULL, **NULLABLE, )
-    message = models.ForeignKey(Message, verbose_name="Сообщение рассылки", on_delete=models.CASCADE)
+    owner_mailing = models.ForeignKey(User, related_name="mailings", verbose_name="Автор рассылки",
+                                      on_delete=models.SET_NULL, **NULLABLE, )
+    message = models.ForeignKey(Message, verbose_name="Сообщение для рассылки", on_delete=models.CASCADE)
     frequency = models.CharField(max_length=15, choices=Frequency_of_mailing, verbose_name="Периодичность рассылки")
     status = models.CharField(max_length=10, choices=Mailing_status, default="created",
                               verbose_name="Статус рассылки", )

@@ -4,7 +4,7 @@ from django.views.decorators.cache import cache_page
 from mailings.apps import MailingsConfig
 from mailings.views import MailingListView, MailingDetailView, MailingCreateView, MailingUpdateView, MailingDeleteView, \
     ContactsView, ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView, ClientDeleteView, \
-    MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, mailing_status, UserListView
+    MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, mailing_status, user_status, UserListView
 
 app_name = MailingsConfig.name
 

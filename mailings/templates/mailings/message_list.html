@@ -4,23 +4,19 @@
 {% block content %}
 
 <div class="row text-center">
-    {% if user.is_authenticated %}
+    {% if not perms.mailings.View_any_mailing_lists %}
     <a class="btn mb-3 btn-lg btn-block btn-outline-primary" href="{% url 'mailings:message_create'%}"
        role="button">Добавить сообщение</a>
-    {% else %}
-    <h3>Для добавления сообщения выполните вход</h3>
-    {% endif %}
+   {% endif %}
     <div class="container">
         <div class="row text-center">
             {% for object in object_list %}
+            {% if perms.mailings.View_any_mailing_lists or user == object.owner_message %}
             <div class="col-4">
-
                 <div class="card mb-4 box-shadow">
-
                     <div class="card-header">
-                        <h6 class="my-0 font-weight-normal">Тема сообщения: {{object.subject}}</h6>
+                        <h6 class="my-0 font-weight-normal">Тема: {{object.subject}}</h6>
                         <h6 class="my-0 font-weight-normal">Сообщение: {{object.message | truncatechars:40}}</h6>
-
                     </div>
                     <div class="card-body">
                         <div class="card-body">
@@ -29,19 +25,15 @@
                             {% if user == object.owner_message %}
                             <a class="btn mb-1 btn-lt btn btn-primary" role="button"
                                href="{% url 'mailings:message_update' object.pk %}">Редактировать</a>
-
                             <a class="btn mb-1 btn-lt btn btn-danger" role="button"
                                href="{% url 'mailings:message_delete' object.pk %}">Удалить</a>
                             {% endif %}
-
                         </div>
-
                     </div>
                 </div>
-
             </div>
+            {% endif %}
             {% endfor %}
-
         </div>
     </div>
 

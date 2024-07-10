@@ -4,6 +4,7 @@
 {% block content %}
 
 <div class="row text-center">
+    {% if perms.users.View_the_list_of_service_users and perms.users.Block_users_of_the_service %}
         <div class="container">
         <div class="row text-center">
             {% for object in object_list %}
@@ -13,9 +14,22 @@
                         <h6 class="my-0 font-weight-normal">Имя: {{object.first_name}}</h6>
                         <h6 class="my-0 font-weight-normal">Фамилия: {{object.last_name}}</h6>
                         <h6 class="my-0 font-weight-normal">Электронная почта: {{object.email }}</h6>
+                        {% if object.is_active %}
+                        <h6 class="my-0 font-weight-normal">Статус: Активный пользователь</h6>
+                        {% else %}
+                        <h6 class="my-0 font-weight-normal">Статус: Заблокирован</h6>
+                                        {% endif %}
+
                     </div>
                     <div class="card-body">
                         <div class="card-body">
+                            {% if object.is_active %}
+                            <a class="btn btn-danger" role="button"
+                              href="{% url 'mailings:user_status' object.pk %}">Заблокировать пользователя</a>
+                              {% else %}
+                            <a class="btn btn-success" role="button"
+                              href="{% url 'mailings:user_status' object.pk %}">Разблокировать пользователя</a>
+                            {% endif %}
 
                         </div>
                     </div>
@@ -24,6 +38,10 @@
             {% endfor %}
         </div>
     </div>
+                {% endif %}
+
+
+
 
 </div>
 {% endblock %}

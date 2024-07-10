@@ -19,15 +19,17 @@ class MailingListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с расылками"""
     model = Mailing
 
-    # def get_queryset(self, *args, **kwargs):
-    #     queryset = super().get_queryset()
-    #     user = self.request.user
-    #     if user.has_perm('mailings.View_any_mailing_lists'):
-    #         queryset = queryset.all()
-    #         return queryset
-    # else:
-    #     queryset = queryset.filter(published=True)
-    #     return queryset
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset()
+        print(queryset)
+        user = self.request.user
+        print(user)
+        if user.has_perm('mailings.View_any_mailing_lists', 'mailings.Disable_mailing_lists'):
+            print('hello')
+            queryset = queryset.all()
+            return queryset
+
+        return queryset
 
     # def get_context_data(self, *args, **kwargs):
     #     """Метод для получения версии продукта и вывода только активной версии"""
@@ -60,18 +62,33 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-
 class MailingUpdateView(LoginRequiredMixin, UpdateView):
     """Контроллер для редактирования рассылки"""
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy("mailings:mailings_list")
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner_mailing:
+            return MailingForm
+        elif user.has_perm('mailings.Disable_mailing_lists'):
+            return MailingModeratorForm
+        else:
+            raise PermissionDenied
+
 
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
     """Контроллер для удаления рассылки"""
     model = Mailing
     success_url = reverse_lazy("mailings:mailings_list")
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner_mailing:
+            return MailingForm
+        else:
+            raise PermissionDenied
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -108,6 +125,15 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailings:clients_list')
+
+    def form_valid(self, form):
+        """Метод для автоматического привязывания Пользователя к создаваемому Клиенту"""
+        # Сохранение формы
+        self.object = form.save()
+        self.object.owner_client = self.request.user
+        self.object.save()
+
+        return super().form_valid(form)
 
 
 class ClientUpdateView(LoginRequiredMixin, UpdateView):
@@ -158,6 +184,15 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
     form_class = MessageForm
     success_url = reverse_lazy('mailings:messages_list')
 
+    def form_valid(self, form):
+        """Метод для автоматического привязывания Пользователя к создаваемому Клиенту"""
+        # Сохранение формы
+        self.object = form.save()
+        self.object.owner_message = self.request.user
+        self.object.save()
+
+        return super().form_valid(form)
+
 
 class MessageUpdateView(LoginRequiredMixin, UpdateView):
     """Контроллер для редактирования сообщений"""
@@ -165,11 +200,25 @@ class MessageUpdateView(LoginRequiredMixin, UpdateView):
     form_class = MessageForm
     success_url = reverse_lazy('mailings:messages_list')
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner_message:
+            return MessageForm
+        else:
+            raise PermissionDenied
+
 
 class MessageDeleteView(LoginRequiredMixin, DeleteView):
     """Контроллер для удаления сообщений"""
     model = Message
     success_url = reverse_lazy('mailings:messages_list')
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner_message:
+            return MessageForm
+        else:
+            raise PermissionDenied
 
 
 class UserListView(LoginRequiredMixin, ListView):
@@ -201,3 +250,18 @@ def mailing_status(request, pk):
 
     status.save()
     return redirect(reverse("mailings:mailings_list"))
+
+
+def user_status(request, pk):
+    """
+    Функция для Модератора по смене активности пользователя.
+    """
+    status = get_object_or_404(User, pk=pk)
+    if status.is_active is True:
+        status.is_active = False
+
+    elif status.is_active is False:
+        status.is_active = True
+
+    status.save()
+    return redirect(reverse("mailings:users_list"))

@@ -55,4 +55,16 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 def send_message(request):
     return render(request, "users/send_message.html")
 
+def user_status(request, pk):
+    """
+    Функция для Модератора по смене активности пользователя.
+    """
+    status = get_object_or_404(User, pk=pk)
+    if status.is_active is True:
+        status.is_active = False
 
+    elif status.is_active is False:
+        status.is_active = True
+
+    status.save()
+    return redirect(reverse("mailings:users_list"))
