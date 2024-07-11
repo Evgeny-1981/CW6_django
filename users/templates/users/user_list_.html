@@ -4,16 +4,12 @@
 {% block content %}
 
 <div class="row text-center">
+    {% if perms.users.View_the_list_of_service_users and perms.users.Block_users_of_the_service %}
         <div class="container">
         <div class="row text-center">
             {% for object in object_list %}
             <div class="col-4">
                 <div class="card mb-4 box-shadow">
-                    {% if object.avatar %}
-                    <img src="{{ object.avatar | media_filter }}">
-                    {% else %}
-                    <img src="{% static 'images/default.jpg' %}">
-                    {% endif %}
                     <div class="card-header">
                         <h6 class="my-0 font-weight-normal">Имя: {{object.first_name}}</h6>
                         <h6 class="my-0 font-weight-normal">Фамилия: {{object.last_name}}</h6>
@@ -34,6 +30,7 @@
                             <a class="btn btn-success" role="button"
                               href="{% url 'users:user_status' object.pk %}">Разблокировать пользователя</a>
                             {% endif %}
+
                         </div>
                     </div>
                 </div>
@@ -41,5 +38,10 @@
             {% endfor %}
             </div>
     </div>
+    {% endif %}
+
+
+
+
 </div>
 {% endblock %}

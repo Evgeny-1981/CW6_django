@@ -12,33 +12,18 @@ from mailings.models import Client, Message, Mailing, MailingAttempt
 from users.models import User
 
 
-# from mailings.services import get_categoryes_list
-
-
 class MailingListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с расылками"""
     model = Mailing
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset()
-        print(queryset)
         user = self.request.user
-        print(user)
         if user.has_perm('mailings.View_any_mailing_lists', 'mailings.Disable_mailing_lists'):
-            print('hello')
             queryset = queryset.all()
             return queryset
 
         return queryset
-
-    # def get_context_data(self, *args, **kwargs):
-    #     """Метод для получения версии продукта и вывода только активной версии"""
-    #     context = super().get_context_data(*args, **kwargs)
-    #     products = self.get_queryset()
-    #     for product in products:
-    #         product.version_name = product.version.filter(current_version=True).first()
-    #     context["object_list"] = products
-    #     return context
 
 
 class MailingDetailView(LoginRequiredMixin, DetailView):
@@ -95,27 +80,8 @@ class ClientListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с клиентами"""
     model = Client
 
-    # def get_queryset(self, *args, **kwargs):
-    #     queryset = super().get_queryset()
-    #     user = self.request.user
-    #     if user.has_perm('mailings.View_any_mailing_lists'):
-    #         queryset = queryset.all()
-    #         return queryset
-    # else:
-    #     queryset = queryset.filter(published=True)
-    #     return queryset
 
-    # def get_context_data(self, *args, **kwargs):
-    #     """Метод для получения версии продукта и вывода только активной версии"""
-    #     context = super().get_context_data(*args, **kwargs)
-    #     products = self.get_queryset()
-    #     for product in products:
-    #         product.version_name = product.version.filter(current_version=True).first()
-    #     context["object_list"] = products
-    #     return context
-
-
-class ClientDetailView(DetailView):
+class ClientDetailView(LoginRequiredMixin, DetailView):
     """Контроллер для просмотра клиента"""
     model = Client
 
@@ -137,43 +103,38 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
 
 
 class ClientUpdateView(LoginRequiredMixin, UpdateView):
-    """Контроллер для редактирования рассылки"""
+    """Контроллер для редактирования клиента"""
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mailings:clients_list')
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner_client:
+            return ClientForm
+        else:
+            raise PermissionDenied
+
 
 class ClientDeleteView(LoginRequiredMixin, DeleteView):
-    """Контроллер для удаления рассылки"""
+    """Контроллер для удаления клиента"""
     model = Client
     success_url = reverse_lazy('mailings:clients_list')
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner_client:
+            return MessageForm
+        else:
+            raise PermissionDenied
 
 
 class MessageListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с сообщениями"""
     model = Message
 
-    # def get_queryset(self, *args, **kwargs):
-    #     queryset = super().get_queryset()
-    #     user = self.request.user
-    #     if user.has_perm('mailings.View_any_mailing_lists'):
-    #         queryset = queryset.all()
-    #         return queryset
-    # else:
-    #     queryset = queryset.filter(published=True)
-    #     return queryset
 
-    # def get_context_data(self, *args, **kwargs):
-    #     """Метод для получения версии продукта и вывода только активной версии"""
-    #     context = super().get_context_data(*args, **kwargs)
-    #     products = self.get_queryset()
-    #     for product in products:
-    #         product.version_name = product.version.filter(current_version=True).first()
-    #     context["object_list"] = products
-    #     return context
-
-
-class MessageDetailView(DetailView):
+class MessageDetailView(LoginRequiredMixin, DetailView):
     """Контроллер для просмотра сообщения"""
     model = Message
 
@@ -221,11 +182,6 @@ class MessageDeleteView(LoginRequiredMixin, DeleteView):
             raise PermissionDenied
 
 
-class UserListView(LoginRequiredMixin, ListView):
-    """Контроллер отображения страницы с сообщениями"""
-    model = User
-
-
 class ContactsView(TemplateView):
     template_name = 'mailings/contacts.html'
 
@@ -244,10 +200,8 @@ def mailing_status(request, pk):
     status = get_object_or_404(Mailing, pk=pk)
     if status.is_active is True:
         status.is_active = False
-
     elif status.is_active is False:
         status.is_active = True
-
     status.save()
     return redirect(reverse("mailings:mailings_list"))
 
@@ -259,9 +213,7 @@ def user_status(request, pk):
     status = get_object_or_404(User, pk=pk)
     if status.is_active is True:
         status.is_active = False
-
     elif status.is_active is False:
         status.is_active = True
-
     status.save()
-    return redirect(reverse("mailings:users_list"))
+    return redirect(reverse("users:users_list"))

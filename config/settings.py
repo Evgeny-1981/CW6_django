@@ -143,7 +143,7 @@ STATICFILES_DIRS = (
 )
 
 INTERNAL_IPS = [
-    # ...
+    # ...default
     "127.0.0.1",
     # ...
 ]

@@ -21,7 +21,7 @@ class ClientForm(FormMixin, ModelForm):
 
     class Meta:
         model = Client
-        fields = '__all__'
+        exclude = ('owner_client',)
 
 
 class ClientModeratorForm(FormMixin, ModelForm):

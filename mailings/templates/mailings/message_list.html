@@ -7,7 +7,7 @@
     {% if not perms.mailings.View_any_mailing_lists %}
     <a class="btn mb-3 btn-lg btn-block btn-outline-primary" href="{% url 'mailings:message_create'%}"
        role="button">Добавить сообщение</a>
-   {% endif %}
+    {% endif %}
     <div class="container">
         <div class="row text-center">
             {% for object in object_list %}

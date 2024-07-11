@@ -8,10 +8,14 @@ from config.settings import EMAIL_HOST_USER
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+# from django.shortcuts import render
+# from django.contrib.auth.models import User
+
 
 class UserListView(ListView):
     """Контроллер отображения страницы с сообщениями"""
     model = User
+
 
 class RegisterView(CreateView):
     model = User
@@ -46,7 +50,7 @@ def email_verification(request, token):
 class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
-    success_url = reverse_lazy('mailings:product_list')
+    success_url = reverse_lazy('mailings:mailings_list')
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -55,6 +59,7 @@ class ProfileView(LoginRequiredMixin, UpdateView):
 def send_message(request):
     return render(request, "users/send_message.html")
 
+
 def user_status(request, pk):
     """
     Функция для Модератора по смене активности пользователя.
@@ -62,9 +67,7 @@ def user_status(request, pk):
     status = get_object_or_404(User, pk=pk)
     if status.is_active is True:
         status.is_active = False
-
     elif status.is_active is False:
         status.is_active = True
-
     status.save()
-    return redirect(reverse("mailings:users_list"))
+    return redirect(reverse("users:users_list"))
