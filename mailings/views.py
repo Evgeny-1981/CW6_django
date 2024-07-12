@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
@@ -26,10 +26,15 @@ class MailingListView(LoginRequiredMixin, ListView):
         return queryset
 
 
-class MailingDetailView(LoginRequiredMixin, DetailView):
+class MailingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """Контроллер для просмотра рассылки"""
     model = Mailing
 
+    def test_func(self):
+        client = self.get_object()
+        if self.request.user == client.owner_mailing:
+            return True
+        return False
 
 class MailingCreateView(LoginRequiredMixin, CreateView):
     """Контроллер для создания рассылки"""
@@ -63,17 +68,16 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
             raise PermissionDenied
 
 
-class MailingDeleteView(LoginRequiredMixin, DeleteView):
+class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """Контроллер для удаления рассылки"""
     model = Mailing
     success_url = reverse_lazy("mailings:mailings_list")
 
-    def get_form_class(self):
-        user = self.request.user
-        if user == self.object.owner_mailing:
-            return MailingForm
-        else:
-            raise PermissionDenied
+    def test_func(self):
+        client = self.get_object()
+        if self.request.user == client.owner_mailing:
+            return True
+        return False
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -81,10 +85,15 @@ class ClientListView(LoginRequiredMixin, ListView):
     model = Client
 
 
-class ClientDetailView(LoginRequiredMixin, DetailView):
+class ClientDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """Контроллер для просмотра клиента"""
     model = Client
 
+    def test_func(self):
+        client = self.get_object()
+        if self.request.user == client.owner_client:
+            return True
+        return False
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
     """Контроллер для создания клиента"""
@@ -116,28 +125,31 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
             raise PermissionDenied
 
 
-class ClientDeleteView(LoginRequiredMixin, DeleteView):
+class ClientDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """Контроллер для удаления клиента"""
     model = Client
     success_url = reverse_lazy('mailings:clients_list')
 
-    def get_form_class(self):
-        user = self.request.user
-        if user == self.object.owner_client:
-            return MessageForm
-        else:
-            raise PermissionDenied
-
+    def test_func(self):
+        client = self.get_object()
+        if self.request.user == client.owner_client:
+            return True
+        return False
 
 class MessageListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с сообщениями"""
     model = Message
 
 
-class MessageDetailView(LoginRequiredMixin, DetailView):
+class MessageDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """Контроллер для просмотра сообщения"""
     model = Message
 
+    def test_func(self):
+        client = self.get_object()
+        if self.request.user == client.owner_message:
+            return True
+        return False
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
     """Контроллер для создания сообщения"""
@@ -169,17 +181,16 @@ class MessageUpdateView(LoginRequiredMixin, UpdateView):
             raise PermissionDenied
 
 
-class MessageDeleteView(LoginRequiredMixin, DeleteView):
+class MessageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """Контроллер для удаления сообщений"""
     model = Message
     success_url = reverse_lazy('mailings:messages_list')
 
-    def get_form_class(self):
-        user = self.request.user
-        if user == self.object.owner_message:
-            return MessageForm
-        else:
-            raise PermissionDenied
+    def test_func(self):
+        client = self.get_object()
+        if self.request.user == client.owner_message:
+            return True
+        return False
 
 
 class ContactsView(TemplateView):

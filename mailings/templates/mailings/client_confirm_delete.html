@@ -7,7 +7,6 @@
             <form class="row" method="post" enctype="multipart/form-data">
                 <div class="card-body">
                     {% csrf_token %}
-
                     <h5 class="my-0 font-weight-normal">Удалить клиента - {{ object.pk }}</h5>
                     <a class="btn btn-primary" role="button" href="{% url 'mailings:clients_list' %}">Отмена</a>
                     <button type="submit" class="btn btn-danger">Удалить</button>
