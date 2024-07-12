@@ -19,7 +19,7 @@ class MailingListView(LoginRequiredMixin, ListView):
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset()
         user = self.request.user
-        if user.has_perm('mailings.View_any_mailing_lists', 'mailings.Disable_mailing_lists'):
+        if user.has_perm('mailings.View_any_mailing_lists'):
             queryset = queryset.all()
             return queryset
 
@@ -31,10 +31,14 @@ class MailingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Mailing
 
     def test_func(self):
-        client = self.get_object()
-        if self.request.user == client.owner_mailing:
+        user = self.request.user
+        mailing = self.get_object()
+        if user == mailing.owner_mailing:
+            return True
+        elif user.has_perm('mailings.View_any_mailing_lists'):
             return True
         return False
+
 
 class MailingCreateView(LoginRequiredMixin, CreateView):
     """Контроллер для создания рассылки"""
@@ -63,6 +67,7 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
         if user == self.object.owner_mailing:
             return MailingForm
         elif user.has_perm('mailings.Disable_mailing_lists'):
+            print(user)
             return MailingModeratorForm
         else:
             raise PermissionDenied
@@ -74,8 +79,8 @@ class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy("mailings:mailings_list")
 
     def test_func(self):
-        client = self.get_object()
-        if self.request.user == client.owner_mailing:
+        mailing = self.get_object()
+        if self.request.user == mailing.owner_mailing:
             return True
         return False
 
@@ -94,6 +99,7 @@ class ClientDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         if self.request.user == client.owner_client:
             return True
         return False
+
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
     """Контроллер для создания клиента"""
@@ -136,6 +142,7 @@ class ClientDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+
 class MessageListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с сообщениями"""
     model = Message
@@ -146,10 +153,14 @@ class MessageDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Message
 
     def test_func(self):
-        client = self.get_object()
-        if self.request.user == client.owner_message:
+        user = self.request.user
+        message = self.get_object()
+        if user == message.owner_message:
+            return True
+        elif user.has_perm('users.View_the_list_of_service_users'):
             return True
         return False
+
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
     """Контроллер для создания сообщения"""
@@ -187,8 +198,8 @@ class MessageDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     success_url = reverse_lazy('mailings:messages_list')
 
     def test_func(self):
-        client = self.get_object()
-        if self.request.user == client.owner_message:
+        message = self.get_object()
+        if self.request.user == message.owner_message:
             return True
         return False
 
