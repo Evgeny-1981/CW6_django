@@ -46,6 +46,11 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
     form_class = MailingForm
     success_url = reverse_lazy('mailings:mailings_list')
 
+    def get_form_kwargs(self):
+        kwargs = super(MailingCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
         """Метод для автоматического привязывания Пользователя к создаваемой Рассылке"""
         # Сохранение формы

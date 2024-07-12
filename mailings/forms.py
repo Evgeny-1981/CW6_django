@@ -73,7 +73,10 @@ class MailingForm(FormMixin, ModelForm):
         model = Mailing
         exclude = ('owner_mailing',)
 
-
+    # def __init__(self, *args, **kwargs):
+    #     user = kwargs.pop('user')
+    #     super(MailingForm, self).__init__(*args, **kwargs)
+    #     self.fields['owner_client'].queryset = Client.objects.filter('owner_client' >= user)
 class MailingModeratorForm(FormMixin, ModelForm):
     class Meta:
         model = Mailing
