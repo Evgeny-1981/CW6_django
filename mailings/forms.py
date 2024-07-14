@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from django.forms import ModelForm, BooleanField
 
 from mailings.models import Client, Message, Mailing, MailingAttempt
@@ -73,10 +72,14 @@ class MailingForm(FormMixin, ModelForm):
         model = Mailing
         exclude = ('owner_mailing',)
 
-    # def __init__(self, *args, **kwargs):
-    #     user = kwargs.pop('user')
-    #     super(MailingForm, self).__init__(*args, **kwargs)
-    #     self.fields['owner_client'].queryset = Client.objects.filter('owner_client' >= user)
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(MailingForm, self).__init__(*args, **kwargs)
+        self.fields['message'].queryset = Message.objects.filter(owner_message=user)
+
+        self.fields['clients'].queryset = Client.objects.filter(owner_client=user)
+
+
 class MailingModeratorForm(FormMixin, ModelForm):
     class Meta:
         model = Mailing

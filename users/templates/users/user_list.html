@@ -4,9 +4,11 @@
 {% block content %}
 
 <div class="row text-center">
+
         <div class="container">
         <div class="row text-center">
             {% for object in object_list %}
+            {% if not object.is_superuser and not object.is_staff %}
             <div class="col-4">
                 <div class="card mb-4 box-shadow">
                     {% if object.avatar %}
@@ -23,7 +25,6 @@
                         {% else %}
                         <h6 class="my-0 font-weight-normal">Статус: Заблокирован</h6>
                         {% endif %}
-
                     </div>
                     <div class="card-body">
                         <div class="card-body">
@@ -38,8 +39,10 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             {% endfor %}
             </div>
     </div>
 </div>
+
 {% endblock %}

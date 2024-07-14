@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="row text-center">
-    {% if perms.users.View_the_list_of_service_users and perms.users.Block_users_of_the_service %}
+    {% if not perms.users.View_the_list_of_service_users and not perms.users.Block_users_of_the_service %}
         <div class="container">
         <div class="row text-center">
             {% for object in object_list %}

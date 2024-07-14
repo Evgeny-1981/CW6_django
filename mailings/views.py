@@ -1,14 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404, redirect
 from django.core.exceptions import PermissionDenied
-from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
-from pytils.translit import slugify
 
 from mailings.forms import MailingForm, ClientForm, MessageForm, MailingModeratorForm
-from mailings.models import Client, Message, Mailing, MailingAttempt
+from mailings.models import Client, Message, Mailing
 from users.models import User
 
 
@@ -66,6 +64,11 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
     model = Mailing
     form_class = MailingForm
     success_url = reverse_lazy("mailings:mailings_list")
+
+    def get_form_kwargs(self):
+        kwargs = super(MailingUpdateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def get_form_class(self):
         user = self.request.user
