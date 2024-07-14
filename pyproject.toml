@@ -20,6 +20,8 @@ redis = "^5.0.7"
 flake8 = "^7.1.0"
 django-crontab = "^0.7.1"
 python-crontab = "^3.2.0"
+pytz = "^2024.1"
+datetime = "^5.5"
 
 [build-system]
 requires = ["poetry-core"]

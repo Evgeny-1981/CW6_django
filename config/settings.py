@@ -121,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "ru-ru"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Yekaterinburg"
 
 USE_I18N = True
 
@@ -177,5 +177,5 @@ if CACHE_ENABLED:
     }
 
 CRONJOBS = [
-    ('*/1 * * * *', 'myapp.cron.my_scheduled_job')
+    ('*/1 * * * *', 'mailings.cron.scheduled_mailing')
 ]

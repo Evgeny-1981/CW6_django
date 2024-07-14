@@ -8,6 +8,7 @@ Frequency_of_mailing = [("Daily", "Ежедневно"), ("Weekly", "Ежене�
 Mailing_status = [("Completed", "Завершена"), ("Created", "Создана"), ("Launched", "Запущена")]
 Permissions = [('View_any_mailing_lists', 'Просматривать любые рассылки'),
                ('Disable_mailing_lists', 'Отключать рассылки'), ]
+Attempt_status = [("Succses", "Успешно"), ("Fail", "Неуспешно"), ]
 
 
 class Client(models.Model):
@@ -47,7 +48,7 @@ class Message(models.Model):
 
 class Mailing(models.Model):
     """Модель для рассылки"""
-    datetime = models.DateTimeField(default=timezone.now, verbose_name="Дата и время первой отправки")
+    start_mailing = models.DateTimeField(default=timezone.now, verbose_name="Дата и время первой отправки")
     owner_mailing = models.ForeignKey(User, related_name="mailings", verbose_name="Автор рассылки",
                                       on_delete=models.SET_NULL, **NULLABLE, )
     message = models.ForeignKey(Message, verbose_name="Сообщение для рассылки", on_delete=models.CASCADE)
@@ -61,17 +62,17 @@ class Mailing(models.Model):
         db_table = "mailing"
         verbose_name = "Рассылку"
         verbose_name_plural = "Рассылки"
-        ordering = ("datetime", "status",)
+        ordering = ("start_mailing", "status",)
         permissions = Permissions
 
     def __str__(self):
-        return f"Рассылка: {self.pk}. Время: {self.datetime}. Статус: {self.status}"
+        return f"Рассылка: {self.pk}. Время: {self.start_mailing}. Статус: {self.status}"
 
 
 class MailingAttempt(models.Model):
     """Модель для отчета о рассылках"""
-    datetime = models.DateTimeField(auto_now=True, verbose_name="Дата и время рассылки", )
-    status = models.CharField(max_length=120, verbose_name="Статус рассылки", )
+    data_mailing = models.DateTimeField(auto_now=True, verbose_name="Дата и время рассылки", )
+    status = models.CharField(max_length=120, choices=Attempt_status, verbose_name="Статус рассылки", )
     answer = models.TextField(verbose_name="Ответ сервера", **NULLABLE, )
     mailing = models.ForeignKey(Mailing, verbose_name="Рассылка", on_delete=models.CASCADE, )
     owner_mailing = models.ForeignKey(User, verbose_name="Владелец рассылки", on_delete=models.SET_NULL, **NULLABLE)
@@ -83,4 +84,4 @@ class MailingAttempt(models.Model):
         ordering = ("status", "answer", "owner_mailing",)
 
     def __str__(self):
-        return f"{self.datetime}, {self.status}, {self.answer}"
+        return f"{self.data_mailing}, {self.status}, {self.answer}"

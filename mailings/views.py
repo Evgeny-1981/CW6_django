@@ -14,14 +14,12 @@ class MailingListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с расылками"""
     model = Mailing
 
-    def get_queryset(self, *args, **kwargs):
-        queryset = super().get_queryset()
+    def get_queryset(self):
         user = self.request.user
         if user.has_perm('mailings.View_any_mailing_lists'):
-            queryset = queryset.all()
-            return queryset
+            return super().get_queryset()
+        return super().get_queryset().filter(owner_mailing=user)
 
-        return queryset
 
 
 class MailingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
@@ -75,7 +73,6 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
         if user == self.object.owner_mailing:
             return MailingForm
         elif user.has_perm('mailings.Disable_mailing_lists'):
-            print(user)
             return MailingModeratorForm
         else:
             raise PermissionDenied
