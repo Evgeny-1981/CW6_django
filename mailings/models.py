@@ -8,7 +8,7 @@ Frequency_of_mailing = [("Daily", "Ежедневно"), ("Weekly", "Ежене�
 Mailing_status = [("Completed", "Завершена"), ("Created", "Создана"), ("Launched", "Запущена")]
 Permissions = [('View_any_mailing_lists', 'Просматривать любые рассылки'),
                ('Disable_mailing_lists', 'Отключать рассылки'), ]
-Attempt_status = [("Succses", "Успешно"), ("Fail", "Неуспешно"), ]
+Attempt_status = [("Success", "Успешно"), ("Fail", "Неуспешно"), ]
 
 
 class Client(models.Model):

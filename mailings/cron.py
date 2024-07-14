@@ -14,8 +14,7 @@ def send_message(mailing):
     содержащимся в списке рассылки и фиксирует ответ сервера,
     устанавливая дату следующей рассылки в зависимости от выбранной периодичности
     """
-    # subject = mailing.message.subject
-    # message = mailing.message.message
+
     try:
         response = send_mail(
             subject=mailing.message.subject,
@@ -43,7 +42,7 @@ def send_message(mailing):
 
     except smtplib.SMTPException as error:
         # При ошибке отправки записываем полученный ответ сервера
-        MailingAttempt.objects.create(status=MailingAttempt.status['Fail'], response=error, mailing=mailing)
+        MailingAttempt.objects.create(status=MailingAttempt.status['Fail'], answer=error, mailing=mailing)
 
 
 def send_scheduled_mail():
