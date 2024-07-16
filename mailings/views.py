@@ -21,7 +21,6 @@ class MailingListView(LoginRequiredMixin, ListView):
         return super().get_queryset().filter(owner_mailing=user)
 
 
-
 class MailingDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """Контроллер для просмотра рассылки"""
     model = Mailing

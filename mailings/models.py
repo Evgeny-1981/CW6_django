@@ -13,7 +13,7 @@ Attempt_status = [("Success", "Успешно"), ("Fail", "Неуспешно"),
 
 class Client(models.Model):
     """Модель для клиента"""
-    email = models.EmailField(unique=True, verbose_name='Электронная почта')
+    email = models.EmailField(verbose_name='Электронная почта')
     fio = models.CharField(max_length=150, verbose_name='ФИО')
     comment = models.TextField(verbose_name='Комментарий', **NULLABLE)
     owner_client = models.ForeignKey(User, verbose_name="Чей клиент", related_name="clients", on_delete=models.SET_NULL,
@@ -51,9 +51,9 @@ class Mailing(models.Model):
     start_mailing = models.DateTimeField(default=timezone.now, verbose_name="Дата и время первой отправки")
     owner_mailing = models.ForeignKey(User, related_name="mailings", verbose_name="Автор рассылки",
                                       on_delete=models.SET_NULL, **NULLABLE, )
-    message = models.ForeignKey(Message, verbose_name="Сообщение для рассылки", on_delete=models.CASCADE)
+    message = models.ForeignKey(Message, verbose_name="Тема рассылки", on_delete=models.CASCADE)
     frequency = models.CharField(max_length=15, choices=Frequency_of_mailing, verbose_name="Периодичность рассылки")
-    status = models.CharField(max_length=10, choices=Mailing_status, default="created",
+    status = models.CharField(max_length=10, choices=Mailing_status, default="Created",
                               verbose_name="Статус рассылки", )
     clients = models.ManyToManyField(Client, verbose_name="Получатели рассылки")
     is_active = models.BooleanField(default=True, verbose_name="Актуальность рассылки")
@@ -72,7 +72,7 @@ class Mailing(models.Model):
 class MailingAttempt(models.Model):
     """Модель для отчета о рассылках"""
     data_mailing = models.DateTimeField(auto_now=True, verbose_name="Дата и время рассылки", )
-    status = models.CharField(max_length=120, choices=Attempt_status, verbose_name="Статус рассылки", )
+    status = models.CharField(max_length=120, verbose_name="Статус рассылки", )
     answer = models.TextField(verbose_name="Ответ сервера", **NULLABLE, )
     mailing = models.ForeignKey(Mailing, verbose_name="Рассылка", on_delete=models.CASCADE, )
     owner_mailing = models.ForeignKey(User, verbose_name="Владелец рассылки", on_delete=models.SET_NULL, **NULLABLE)

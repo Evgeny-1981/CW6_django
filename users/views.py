@@ -6,15 +6,22 @@ import secrets
 from django.core.mail import send_mail
 from config.settings import EMAIL_HOST_USER
 from django.shortcuts import get_object_or_404, redirect, render
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
 
 # from django.shortcuts import render
 # from django.contrib.auth.models import User
 
 
-class UserListView(ListView):
+class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """Контроллер отображения страницы с сообщениями"""
     model = User
+
+    def test_func(self):
+        user = self.request.user
+        if user.has_perm('users.Block_users_of_the_service'):
+            return True
+        return False
 
 
 class RegisterView(CreateView):

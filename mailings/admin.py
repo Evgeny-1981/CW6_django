@@ -1,5 +1,5 @@
 from django.contrib import admin
-from mailings.models import Client, Message, Mailing, MailingAttempt
+from mailings.models import Client, Message, Mailing, MailingAttempt, User
 
 
 @admin.register(Client)
@@ -25,6 +25,7 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(MailingAttempt)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('data_mailing', 'status', 'answer',)
+    list_display = ('data_mailing', 'status', 'answer', )
     list_filter = ('status', 'answer', )
     search_fields = ('data_mailing',)
+
