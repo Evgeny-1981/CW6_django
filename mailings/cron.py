@@ -25,9 +25,9 @@ def send_message(mailing):
         )
         if response == 1:
             # При успешной отправке сохраняем информацию о попытке в базу данных
-            status = 'Запущена'
+            # status = 'Launched'
             answer = 'Успешно отправлено'
-            MailingAttempt.objects.create(status=status, answer=answer, mailing=mailing)
+            MailingAttempt.objects.create(status='Success', answer=answer, mailing=mailing)
 
             # Устанавливаем дату следующей отправки письма
             if mailing.frequency == 'Daily':
@@ -41,7 +41,7 @@ def send_message(mailing):
 
     except smtplib.SMTPException as e:
         # При ошибке отправки записываем полученный ответ сервера
-        MailingAttempt.objects.create(status=MailingAttempt.status['Fail'], answer=e, mailing=mailing)
+        MailingAttempt.objects.create(status='Fail', answer=e, mailing=mailing)
 
 
 def send_scheduled_mail():
@@ -53,9 +53,9 @@ def send_scheduled_mail():
     current_datetime = datetime.datetime.now(pytz.timezone(settings.TIME_ZONE))
 
     # Проверяем, какие рассылки должны быть завершены в этот момент времени
-    for mailing in Mailing.objects.filter(status='Launched'):
-        mailing.status = 'Completed'
-        mailing.save()
+    # for mailing in Mailing.objects.filter(status='Launched'):
+    #     mailing.status = 'Completed'
+    #     mailing.save()
     # Проверяем, какие рассылки должны быть отправлены в этот момент времени и производим отправку
     mailings = Mailing.objects.filter(status__in=['Created', 'Launched'], is_active=True)
     for mailing in mailings:

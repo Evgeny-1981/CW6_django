@@ -177,5 +177,5 @@ if CACHE_ENABLED:
     }
 
 CRONJOBS = [
-    ('*/1 * * * *', 'mailings.cron.scheduled_mailing')
+    ('*/1 * * * *', 'mailings.cron.send_scheduled_mail')
 ]
