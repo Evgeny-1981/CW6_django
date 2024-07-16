@@ -4,7 +4,7 @@ from django.views.decorators.cache import cache_page
 from mailings.apps import MailingsConfig
 from mailings.views import MailingListView, MailingDetailView, MailingCreateView, MailingUpdateView, MailingDeleteView, \
     ContactsView, ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView, ClientDeleteView, \
-    MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, mailing_status
+    MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, MailingAttemptView, mailing_status
 from users.views import UserListView
 
 app_name = MailingsConfig.name
@@ -15,6 +15,7 @@ urlpatterns = [
     path('mailings/create', MailingCreateView.as_view(), name='mailing_create'),
     path('mailings/<int:pk>/update/', MailingUpdateView.as_view(), name='mailing_update'),
     path('mailings/<int:pk>/delete/', MailingDeleteView.as_view(), name='mailing_delete'),
+    path('mailings/attempts/', MailingAttemptView.as_view(), name='attempts_info'),
     path('clients/', ClientListView.as_view(), name='clients_list'),
     path('clients/<int:pk>/', ClientDetailView.as_view(), name='client_info'),
     path('clients/create', ClientCreateView.as_view(), name='client_create'),

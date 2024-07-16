@@ -42,30 +42,6 @@ class MessageModeratorForm(FormMixin, ModelForm):
         model = Message
         fields = '__all__'
 
-    # def clean_name(self):
-    #     """Метод для проверки валидации названия продукта при создании"""
-    #     list_words = []
-    #     cleaned_data = self.cleaned_data['name']
-    #     for word in self.locked_words:
-    #         if word in cleaned_data:
-    #             list_words.append(word)
-    #     result_locked_words = ", ".join(list_words)
-    #     if len(result_locked_words) != 0:
-    #         raise ValidationError(f'Запрещено использовать в названии слова: {result_locked_words}')
-    #     return cleaned_data
-
-    # def clean_description(self):
-    #     """Метод для проверки валидации описания продукта при создании"""
-    #     list_words = []
-    #     cleaned_data = self.cleaned_data['description']
-    #     for word in self.locked_words:
-    #         if word in cleaned_data:
-    #             list_words.append(word)
-    #     result_locked_words = ", ".join(list_words)
-    #     if len(result_locked_words) != 0:
-    #         raise ValidationError(f'Запрещено использовать в описании слова: {result_locked_words}')
-    #     return cleaned_data
-
 
 class MailingForm(FormMixin, ModelForm):
     class Meta:
@@ -90,3 +66,10 @@ class MailingAttemptForm(FormMixin, ModelForm):
     class Meta:
         model = MailingAttempt
         fields = '__all__'
+
+    # def __init__(self, *args, **kwargs):
+    #     user = kwargs.pop('user')
+    #     super(MailingAttemptForm, self).__init__(*args, **kwargs)
+    #     self.fields['mailing'].queryset = Mailing.objects.filter(owner_mailing=user)
+    #
+    #     self.fields['clients'].queryset = Client.objects.filter(owner_client=user)

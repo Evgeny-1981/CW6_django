@@ -41,10 +41,10 @@ def send_message(mailing):
         # При ошибке отправки записываем полученный ответ сервера
         MailingAttempt.objects.create(status='Ошибка отправки', answer=error, mailing=mailing)
 
-    finally:
-        mailing.status = 'Launched'
-        answer = 'Не отправлено'
-        MailingAttempt.objects.create(status='Ошибка', answer=answer, mailing=mailing)
+    # finally:
+    #     mailing.status = 'Launched'
+    #     answer = 'Не отправлено'
+    #     MailingAttempt.objects.create(status='Ошибка', answer=answer, mailing=mailing)
 
 
 def send_mailings():

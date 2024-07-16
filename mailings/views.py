@@ -5,8 +5,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 
-from mailings.forms import MailingForm, ClientForm, MessageForm, MailingModeratorForm
-from mailings.models import Client, Message, Mailing
+from mailings.forms import MailingForm, ClientForm, MessageForm, MailingModeratorForm, MailingAttemptForm
+from mailings.models import Client, Message, Mailing, MailingAttempt
 from users.models import User
 
 
@@ -87,6 +87,33 @@ class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == mailing.owner_mailing:
             return True
         return False
+
+
+class MailingAttemptView(LoginRequiredMixin, ListView):
+    """Контроллер для просмотра попыток рассылки"""
+    model = MailingAttempt
+    # form_class = MailingAttemptForm
+
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     mailing_pk = self.kwargs.get('pk')
+    #     print(mailing_pk)
+    #     queryset = queryset.filter(mailing__pk=mailing_pk)
+    #     print(queryset)
+    #     return queryset
+    #
+    # def get_context_data(self, **kwargs):
+    #     context_data = super().get_context_data(**kwargs)
+    #     mailing_pk = self.kwargs.get('pk')
+    #     context_data['mailing'] = Mailing.objects.get(pk=mailing_pk)
+    #     return context_data
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        context_data['total'] = MailingAttempt.objects.all()
+        context_data['total_count'] = MailingAttempt.objects.all().count()
+        context_data['successful_count'] = MailingAttempt.objects.filter(status='Отправлено').count()
+        context_data['unsuccessful_count'] = MailingAttempt.objects.filter(status='Ошибка отправки').count()
+        return context_data
 
 
 class ClientListView(LoginRequiredMixin, ListView):

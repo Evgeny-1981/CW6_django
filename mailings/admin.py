@@ -18,14 +18,14 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Mailing)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('start_mailing', 'owner_mailing', 'frequency', 'status', 'is_active',)
+    list_display = ('id', 'start_mailing', 'owner_mailing', 'frequency', 'status', 'is_active',)
     list_filter = ('status',)
     search_fields = ('owner_mailing',)
 
 
 @admin.register(MailingAttempt)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('data_mailing', 'status', 'answer', )
+    list_display = ('id', 'mailing', 'data_mailing', 'status', 'answer', )
     list_filter = ('status', 'answer', )
     search_fields = ('data_mailing',)
 

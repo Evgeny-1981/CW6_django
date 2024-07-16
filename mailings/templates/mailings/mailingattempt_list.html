@@ -14,22 +14,24 @@
         <thead>
         <tr>
             <th scope="col">№</th>
-            <th scope="col">Статус</th>
+            <th scope="col">Рассылка</th>
             <th scope="col">Время попытки рассылки</th>
+            <th scope="col">Статус</th>
             <th scope="col">Ответ сервера</th>
         </tr>
         </thead>
         <tbody>
         {% for object in object_list %}
         <tr>
-            <td>{{object.pk}}</td>
-            {% if object.success %}
-            <td>"Успешно"</td>
+            <td>{{object.mailing.pk}}</td>
+            <td>{{object.mailing.message}}</td>
+            <td>{{object.data_mailing}}</td>
+            {% if object.status == 'Отправлено' %}
+            <td>Успешно</td>
             {% else %}
-            <td>"Неуспешно"</td>
+            <td>Неуспешно</td>
             {% endif %}
-            <td>{{object.last_try_time}}</td>
-            <td>{{object.response}}</td>
+            <td>{{object.answer}}</td>
         </tr>
         {% endfor %}
         </tbody>

@@ -75,13 +75,13 @@ class MailingAttempt(models.Model):
     status = models.CharField(max_length=120, verbose_name="Статус рассылки", )
     answer = models.TextField(verbose_name="Ответ сервера", **NULLABLE, )
     mailing = models.ForeignKey(Mailing, verbose_name="Рассылка", on_delete=models.CASCADE, )
-    owner_mailing = models.ForeignKey(User, verbose_name="Владелец рассылки", on_delete=models.SET_NULL, **NULLABLE)
+    owner = models.ForeignKey(User, verbose_name="Владелец рассылки", on_delete=models.SET_NULL, **NULLABLE)
 
     class Meta:
-        db_table = "MailingAttempt"
+        db_table = "mailingattempt"
         verbose_name = "Отчет о рассылке"
         verbose_name_plural = "Отчеты о рассылках"
-        ordering = ("status", "answer", "owner_mailing",)
+        ordering = ("status", "answer", )
 
     def __str__(self):
-        return f"{self.data_mailing}, {self.status}, {self.answer}"
+        return f"{self.pk}, {self.mailing}, {self.data_mailing}, {self.status}, {self.answer}"
