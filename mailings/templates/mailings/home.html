@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <div class="mb-1 text-body-secondary">{{ object.created_at }}</div>
                     <div class="mb-1 text-body-secondary">Количество просмотров: {{ object.count_views }}</div>
-                    <p class="card-text mb-auto">{{ object.content | truncatechars:40 }}</p>
+                    <p class="card-text mb-auto">{{ object.content | truncatechars:150 }}</p>
                     <a class="btn btn-primary" role="button" href="{% url 'blogs:blog_info' object.slug %}">Подробнее</a>
                     <a class="btn btn-primary" role="button" href="{% url 'blogs:blog_update' object.slug %}">Редактировать</a>
                     <a class="btn btn-danger" role="button" href="{% url 'blogs:blog_delete' object.slug %}">Удалить</a>
