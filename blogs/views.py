@@ -35,7 +35,7 @@ class BlogCreateView(CreateView):
     model = Blog
     form_class = BlogForm
     # fields = ("title", "content", "preview", "published")
-    success_url = reverse_lazy('mailings:home')
+    # success_url = reverse_lazy('mailings:home')
 
     def form_valid(self, form):
         if form.is_valid():
@@ -49,7 +49,7 @@ class BlogUpdateView(UpdateView):
     model = Blog
     form_class = BlogModeratorForm
     # fields = ("title", "slug", "content", "preview", "published",)
-    success_url = reverse_lazy('mailings:home')
+    # success_url = reverse_lazy('mailings:home')
 
     def get_success_url(self):
         return reverse('blogs:blog_info', args=[self.kwargs.get('slug')])
@@ -57,4 +57,4 @@ class BlogUpdateView(UpdateView):
 
 class BlogDeleteView(DeleteView):
     model = Blog
-    success_url = reverse_lazy('mailings:home')
+    # success_url = reverse_lazy('mailings:home')

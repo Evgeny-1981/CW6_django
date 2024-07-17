@@ -26,7 +26,8 @@
                     <div class="mb-1 text-body-secondary">Количество просмотров: {{ object.count_views }}</div>
                     <p class="card-text mb-auto">{{ object.content | truncatechars:40 }}</p>
                     <a class="btn btn-primary" role="button" href="{% url 'blogs:blog_info' object.slug %}">Подробнее</a>
-
+                    <a class="btn btn-primary" role="button" href="{% url 'blogs:blog_update' object.slug %}">Редактировать</a>
+                    <a class="btn btn-danger" role="button" href="{% url 'blogs:blog_delete' object.slug %}">Удалить</a>
                 </div>
             </div>
          </div>
