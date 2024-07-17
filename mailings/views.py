@@ -1,3 +1,5 @@
+from random import sample
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
@@ -5,6 +7,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 
+from blogs.models import Blog
 from mailings.forms import MailingForm, ClientForm, MessageForm, MailingModeratorForm, MailingAttemptForm
 from mailings.models import Client, Message, Mailing, MailingAttempt
 from users.models import User
@@ -13,6 +16,7 @@ from users.models import User
 class MailingListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с расылками"""
     model = Mailing
+    # success_url = reverse_lazy("mailing:home")
 
     def get_queryset(self):
         user = self.request.user
@@ -92,6 +96,7 @@ class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class MailingAttemptView(LoginRequiredMixin, ListView):
     """Контроллер для просмотра попыток рассылки"""
     model = MailingAttempt
+
     # form_class = MailingAttemptForm
 
     # def get_queryset(self):
@@ -259,14 +264,18 @@ def mailing_status(request, pk):
     return redirect(reverse("mailings:mailings_list"))
 
 
-def user_status(request, pk):
+class HomePage(TemplateView):
     """
-    Функция для Модератора по смене активности пользователя.
+    Контроллер домашней страницы
     """
-    status = get_object_or_404(User, pk=pk)
-    if status.is_active is True:
-        status.is_active = False
-    elif status.is_active is False:
-        status.is_active = True
-    status.save()
-    return redirect(reverse("users:users_list"))
+
+    template_name = 'mailings/home.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        context_data['mailing_count'] = Mailing.objects.all().count()
+        context_data["active_mailing_count"] = Mailing.objects.filter(is_active=True).count()
+        context_data["unique_clients_count"] = Client.objects.all().distinct('email').count()
+        all_posts = list(Blog.objects.all())
+        context_data['random_blogs'] = sample(all_posts, min(len(all_posts), 3))
+        return context_data

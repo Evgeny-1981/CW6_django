@@ -1,21 +1,24 @@
 from django.urls import path
 from django.views.decorators.cache import cache_page
 
+from blogs.views import BlogListView, BlogDetailView
 from mailings.apps import MailingsConfig
 from mailings.views import MailingListView, MailingDetailView, MailingCreateView, MailingUpdateView, MailingDeleteView, \
     ContactsView, ClientListView, ClientDetailView, ClientCreateView, ClientUpdateView, ClientDeleteView, \
-    MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, MailingAttemptView, mailing_status
+    MessageListView, MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, MailingAttemptView, \
+    mailing_status, HomePage
 from users.views import UserListView
 
 app_name = MailingsConfig.name
 
 urlpatterns = [
-    path('', MailingListView.as_view(), name='mailings_list'),
+    path('', HomePage.as_view(), name='home'),
+    path('mailings/', MailingListView.as_view(), name='mailing_list'),
     path('mailings/<int:pk>/', MailingDetailView.as_view(), name='mailing_info'),
     path('mailings/create', MailingCreateView.as_view(), name='mailing_create'),
     path('mailings/<int:pk>/update/', MailingUpdateView.as_view(), name='mailing_update'),
     path('mailings/<int:pk>/delete/', MailingDeleteView.as_view(), name='mailing_delete'),
-    path('mailings/attempts/', MailingAttemptView.as_view(), name='attempts_info'),
+    path('attempts/', MailingAttemptView.as_view(), name='attempts_info'),
     path('clients/', ClientListView.as_view(), name='clients_list'),
     path('clients/<int:pk>/', ClientDetailView.as_view(), name='client_info'),
     path('clients/create', ClientCreateView.as_view(), name='client_create'),

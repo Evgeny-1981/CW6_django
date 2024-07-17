@@ -1,4 +1,4 @@
-{% extends 'catalog/home.html' %}
+{% extends 'mailings/index.html' %}
 {% load my_tags %}
 {% load static %}
 {% block content %}
@@ -13,14 +13,12 @@
                 {% endif %}
                 <div class="card-header">
                     <h5 class="my-0 font-weight-normal">{{object.title}}</h5>
-                    <h6 class="my-0 font-weight-normal">Слаг имя: {{object.slug}}</h6>
                     <h6 class="my-0 font-weight-normal">{{object.content}}</h6>
                     <h6 class="my-0 font-weight-normal">Запись создана: {{object.created_at}}</h6>
                     <h6 class="my-0 font-weight-normal">Количество просмотров: {{object.count_views}}</h6>
                 </div>
                 <div class="card-body">
-                    <a class="btn btn-primary" role="button"
-                       href="{% url 'catalog:blog_list' %}">Назад</a>
+                    <a class="btn btn-primary" role="button" href="{% url 'mailings:home' %}">Назад</a>
                 </div>
             </div>
         </div>

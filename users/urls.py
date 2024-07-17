@@ -12,6 +12,7 @@ from django.contrib.auth.views import (
 )
 
 app_name = UsersConfig.name
+
 urlpatterns = [
     path('', UserListView.as_view(), name='users_list'),
     path("activation/<int:pk>/", user_status, name="user_status"),
