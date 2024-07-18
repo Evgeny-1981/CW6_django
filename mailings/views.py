@@ -1,10 +1,12 @@
 from random import sample
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
+
 from blogs.models import Blog
 from mailings.forms import MailingForm, ClientForm, MessageForm, MailingModeratorForm, MailingAttemptForm
 from mailings.models import Client, Message, Mailing, MailingAttempt
@@ -89,31 +91,6 @@ class MailingDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         if self.request.user == mailing.owner_mailing:
             return True
         return False
-
-
-class MailingAttemptView(LoginRequiredMixin, ListView):
-    """Контроллер для просмотра попыток рассылки"""
-    model = MailingAttempt
-
-    form_class = MailingAttemptForm
-
-    def get_queryset(self):
-        user_id = self.request.user.id
-        mailing_ids = Mailing.objects.all().filter(owner_mailing=user_id).values('id')
-        queryset = MailingAttempt.objects.filter(mailing_id__in=mailing_ids)
-
-        return queryset
-
-    def get_context_data(self, *args, **kwargs):
-        user_id = self.request.user.id
-        mailing_ids = Mailing.objects.all().filter(owner_mailing=user_id).values('id')
-        context_data = super().get_context_data(*args, **kwargs)
-        context_data['total'] = MailingAttempt.objects.all()
-        context_data['total_count'] = MailingAttempt.objects.filter(mailing_id__in=mailing_ids).count()
-        context_data['success_count'] = MailingAttempt.objects.filter(mailing_id__in=mailing_ids,
-                                                                      status='Отправлено').count()
-        context_data['error_count'] = MailingAttempt.objects.filter(mailing_id__in=mailing_ids, status='Ошибка').count()
-        return context_data
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -273,4 +250,29 @@ class HomePage(TemplateView):
         context_data["unique_clients_count"] = Client.objects.all().distinct('email').count()
         blogs_list = list(Blog.objects.all())
         context_data['random_blogs'] = sample(blogs_list, min(len(blogs_list), 3))
+        return context_data
+
+
+class MailingAttemptView(LoginRequiredMixin, ListView):
+    """Контроллер для просмотра попыток рассылки"""
+    model = MailingAttempt
+
+    form_class = MailingAttemptForm
+
+    def get_queryset(self):
+        user_id = self.request.user.id
+        mailing_ids = Mailing.objects.all().filter(owner_mailing=user_id).values('id')
+        queryset = MailingAttempt.objects.filter(mailing_id__in=mailing_ids)
+
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        user_id = self.request.user.id
+        mailing_ids = Mailing.objects.all().filter(owner_mailing=user_id).values('id')
+        context_data = super().get_context_data(*args, **kwargs)
+        context_data['total'] = MailingAttempt.objects.all()
+        context_data['total_count'] = MailingAttempt.objects.filter(mailing_id__in=mailing_ids).count()
+        context_data['success_count'] = MailingAttempt.objects.filter(mailing_id__in=mailing_ids,
+                                                                      status='Отправлено').count()
+        context_data['error_count'] = MailingAttempt.objects.filter(mailing_id__in=mailing_ids, status='Ошибка').count()
         return context_data
