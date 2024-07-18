@@ -274,6 +274,6 @@ class HomePage(TemplateView):
         context_data['mailing_count'] = Mailing.objects.all().count()
         context_data["active_mailing_count"] = Mailing.objects.filter(is_active=True).count()
         context_data["unique_clients_count"] = Client.objects.all().distinct('email').count()
-        all_posts = list(Blog.objects.all())
-        context_data['random_blogs'] = sample(all_posts, min(len(all_posts), 3))
+        blogs_list = list(Blog.objects.all())
+        context_data['random_blogs'] = sample(blogs_list, min(len(blogs_list), 3))
         return context_data

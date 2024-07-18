@@ -2,7 +2,12 @@
 {% load static %}
 {% load my_tags %}
 {% block content %}
-
+<div class="row text-center">
+{% if user.is_staff %}
+    <a class="btn mb-3 btn-lg btn-block btn-outline-primary" href="{% url 'blogs:blog_create'%}"
+       role="button">Добавить запись</a>
+{% endif %}
+    </div>
 <div class="container">
     <div class="row text-left">
         <h4>Статистика сайта</h4>
@@ -26,14 +31,16 @@
                     <div class="mb-1 text-body-secondary">Количество просмотров: {{ object.count_views }}</div>
                     <p class="card-text mb-auto">{{ object.content | truncatechars:150 }}</p>
                     <a class="btn btn-primary" role="button" href="{% url 'blogs:blog_info' object.slug %}">Подробнее</a>
-                    <a class="btn btn-primary" role="button" href="{% url 'blogs:blog_update' object.slug %}">Редактировать</a>
-                    <a class="btn btn-danger" role="button" href="{% url 'blogs:blog_delete' object.slug %}">Удалить</a>
+                    {% if user.is_staff %}
+                        <a class="btn btn-primary" role="button" href="{% url 'blogs:blog_update' object.slug %}">Редактировать</a>
+                        <a class="btn btn-danger" role="button" href="{% url 'blogs:blog_delete' object.slug %}">Удалить</a>
+                    {% endif %}
                 </div>
             </div>
          </div>
         {% endfor %}
     </div>
 </div>
-    </div>
+</div>
 
 {% endblock %}
