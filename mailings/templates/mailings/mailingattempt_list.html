@@ -27,9 +27,9 @@
             <td>{{object.mailing.message}}</td>
             <td>{{object.data_mailing}}</td>
             {% if object.status == 'Отправлено' %}
-            <td>Успешно</td>
+            <td class="table-success">Успешно</td>
             {% else %}
-            <td>Неуспешно</td>
+            <td class="table-danger">Неуспешно</td>
             {% endif %}
             <td>{{object.answer}}</td>
         </tr>

@@ -113,6 +113,7 @@ class MailingAttemptView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         context_data['total'] = MailingAttempt.objects.all()
+        print(len(context_data['total']))
         context_data['total_count'] = MailingAttempt.objects.all().count()
         context_data['success_count'] = MailingAttempt.objects.filter(status='Отправлено').count()
         context_data['error_count'] = MailingAttempt.objects.filter(status='Ошибка отправки').count()

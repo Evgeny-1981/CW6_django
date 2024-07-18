@@ -39,6 +39,12 @@ class BlogCreateView(CreateView):
     # fields = ("title", "content", "preview", "published")
     success_url = reverse_lazy('mailings:home')
 
+    def get_form_class(self):
+        user = self.request.user
+        if user.is_staff:
+            return BlogModeratorForm
+        else:
+            raise PermissionDenied
     def form_valid(self, form):
         if form.is_valid():
             new_blog = form.save()
