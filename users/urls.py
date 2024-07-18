@@ -1,6 +1,6 @@
 from users.apps import UsersConfig
 from users.views import RegisterView, ProfileView, email_verification, send_message, user_status
-from mailings.urls import UserListView
+from users.views import UserListView
 from django.urls import path, reverse_lazy
 from django.contrib.auth.views import (
     LoginView,

@@ -10,10 +10,6 @@ from blogs.forms import BlogForm, BlogModeratorForm
 from blogs.models import Blog
 
 
-# from catalog.services import get_categoryes_list
-# from django.shortcuts import render
-
-
 class BlogDetailView(DetailView):
     model = Blog
 
@@ -36,7 +32,6 @@ class BlogListView(ListView):
 class BlogCreateView(CreateView):
     model = Blog
     form_class = BlogForm
-    # fields = ("title", "content", "preview", "published")
     success_url = reverse_lazy('mailings:home')
 
     def get_form_class(self):
@@ -45,6 +40,7 @@ class BlogCreateView(CreateView):
             return BlogModeratorForm
         else:
             raise PermissionDenied
+
     def form_valid(self, form):
         if form.is_valid():
             new_blog = form.save()
@@ -56,9 +52,6 @@ class BlogCreateView(CreateView):
 class BlogUpdateView(UpdateView):
     model = Blog
     form_class = BlogModeratorForm
-
-    # fields = ("title", "slug", "content", "preview", "published",)
-    # success_url = reverse_lazy('mailings:home')
 
     def get_form_class(self):
         user = self.request.user
@@ -73,8 +66,6 @@ class BlogUpdateView(UpdateView):
 
 class BlogDeleteView(DeleteView):
     model = Blog
-
-    # success_url = reverse_lazy('mailings:home')
 
     def get_form_class(self):
         user = self.request.user

@@ -1,21 +1,19 @@
 from random import sample
-
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
-
 from blogs.models import Blog
 from mailings.forms import MailingForm, ClientForm, MessageForm, MailingModeratorForm, MailingAttemptForm
 from mailings.models import Client, Message, Mailing, MailingAttempt
-from users.models import User
 
 
 class MailingListView(LoginRequiredMixin, ListView):
     """Контроллер отображения страницы с расылками"""
     model = Mailing
+
     # success_url = reverse_lazy("mailing:home")
 
     def get_queryset(self):
@@ -45,10 +43,10 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
     form_class = MailingForm
     success_url = reverse_lazy('mailings:mailings_list')
 
-    def get_form_kwargs(self):
-        kwargs = super(MailingCreateView, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
+    # def get_form_kwargs(self):
+    #     kwargs = super(MailingCreateView, self).get_form_kwargs()
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
 
     def form_valid(self, form):
         """Метод для автоматического привязывания Пользователя к создаваемой Рассылке"""
@@ -99,24 +97,22 @@ class MailingAttemptView(LoginRequiredMixin, ListView):
 
     form_class = MailingAttemptForm
 
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     mailing_pk = self.kwargs.get('pk')
-    #     queryset = queryset.filter(mailing__pk=mailing_pk)
-    #     return queryset
-    #
-    # def get_context_data(self, **kwargs):
-    #     context_data = super().get_context_data(**kwargs)
-    #     mailing_pk = self.kwargs.get('pk')
-    #     context_data['mailing'] = Mailing.objects.get(pk=mailing_pk)
-    #     return context_data
+    def get_queryset(self):
+        user_id = self.request.user.id
+        mailing_ids = Mailing.objects.all().filter(owner_mailing=user_id).values('id')
+        queryset = MailingAttempt.objects.filter(mailing_id__in=mailing_ids)
+
+        return queryset
+
     def get_context_data(self, *args, **kwargs):
+        user_id = self.request.user.id
+        mailing_ids = Mailing.objects.all().filter(owner_mailing=user_id).values('id')
         context_data = super().get_context_data(*args, **kwargs)
         context_data['total'] = MailingAttempt.objects.all()
-        print(len(context_data['total']))
-        context_data['total_count'] = MailingAttempt.objects.all().count()
-        context_data['success_count'] = MailingAttempt.objects.filter(status='Отправлено').count()
-        context_data['error_count'] = MailingAttempt.objects.filter(status='Ошибка отправки').count()
+        context_data['total_count'] = MailingAttempt.objects.filter(mailing_id__in=mailing_ids).count()
+        context_data['success_count'] = MailingAttempt.objects.filter(mailing_id__in=mailing_ids,
+                                                                      status='Отправлено').count()
+        context_data['error_count'] = MailingAttempt.objects.filter(mailing_id__in=mailing_ids, status='Ошибка').count()
         return context_data
 
 

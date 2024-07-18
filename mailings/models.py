@@ -81,7 +81,7 @@ class MailingAttempt(models.Model):
         db_table = "mailingattempt"
         verbose_name = "Отчет о рассылке"
         verbose_name_plural = "Отчеты о рассылках"
-        ordering = ("status", "answer", )
+        ordering = ("status", "answer",)
 
     def __str__(self):
         return f"{self.pk}, {self.mailing}, {self.data_mailing}, {self.status}, {self.answer}"

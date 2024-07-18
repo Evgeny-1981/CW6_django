@@ -19,10 +19,10 @@ class FormMixin:
 class BlogForm(FormMixin, ModelForm):
     class Meta:
         model = Blog
-        exclude = ('count_views', 'slug', 'created_at', 'owner_blog', )
+        exclude = ('count_views', 'slug', 'created_at', 'owner_blog',)
 
 
 class BlogModeratorForm(FormMixin, ModelForm):
     class Meta:
         model = Blog
-        exclude = ('count_views', 'slug', 'created_at', 'owner_blog', )
+        exclude = ('count_views', 'slug', 'created_at', 'owner_blog',)

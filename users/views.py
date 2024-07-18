@@ -9,10 +9,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 
-# from django.shortcuts import render
-# from django.contrib.auth.models import User
-
-
 class UserListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """Контроллер отображения страницы с сообщениями"""
     model = User

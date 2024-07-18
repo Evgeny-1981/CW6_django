@@ -4,15 +4,15 @@
     <h3 align="center">Статистика рассылок</h3>
 </div>
 <div class="col-12 mb-5">
-    <p>Общее количество рассылок: {{total_count}}</p>
-    <p>Количество успешных рассылок: {{success_count}}</p>
-    <p>Количество неуспешных рассылок: {{error_count}}</p>
+    <p>Общее количество попыток рассылки: {{total_count}}</p>
+    <p>Количество успешных: {{success_count}}</p>
+    <p>Количество неуспешных: {{error_count}}</p>
 </div>
 <h3 align="center">Отчёт о попытках рассылок</h3>
 <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
     <table class="table">
         <thead>
-        <tr>
+        <tr class="table-dark table-striped ">
             <th scope="col">№</th>
             <th scope="col">Рассылка</th>
             <th scope="col">Время попытки рассылки</th>
