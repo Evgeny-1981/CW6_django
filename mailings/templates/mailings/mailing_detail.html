@@ -7,12 +7,11 @@
         <div class="col-8">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h5 class="my-0 font-weight-normal">Рассылка создана: {{ mailing.datetime }}</h5>
-                    <h6 class="my-0 font-weight-normal">Владелец рассылки: {{ mailing.owner_mailing }}</h6>
-                    <h6 class="my-0 font-weight-normal">Сообщение рассылки: {{ mailing.message }}</h6>
-                    <h6 class="my-0 font-weight-normal">Периодичность рассылки: {{ mailing.frequency }}</h6>
-
-
+                    <h5 class="my-0 font-weight-normal">Номер рассылки: {{ mailing.id }}</h5>
+                    <h5 class="my-0 font-weight-normal">Дата и время следующей рассылки: {{ mailing.start_mailing }}</h5>
+                    <h5 class="my-0 font-weight-normal">Владелец рассылки: {{ mailing.owner_mailing }}</h5>
+                    <h5 class="my-0 font-weight-normal">Сообщение рассылки: {{ mailing.message }}</h5>
+                    <h5 class="my-0 font-weight-normal">Периодичность рассылки: {{ mailing.frequency }}</h5>
                 </div>
                 <div class="card-body">
                     <h6 class="card-title pricing-card-title">Статус рассылки: {{ mailing.status }}</h6>

@@ -1,7 +1,9 @@
 import datetime
 import smtplib
+
 import pytz
 from django.core.mail import send_mail
+
 from config import settings
 from mailings.models import Mailing, MailingAttempt
 
@@ -35,7 +37,6 @@ def send_message(mailing):
             elif mailing.frequency == 'Monthly':
                 mailing.start_mailing += datetime.timedelta(days=30)
             mailing.save()
-
 
     except smtplib.SMTPException as error:
         # При ошибке отправки записываем полученный ответ сервера

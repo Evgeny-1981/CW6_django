@@ -16,6 +16,7 @@
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
                         <h6 class="my-0 font-weight-normal">Тема рассылки: {{object.message | truncatechars:40}}</h6>
+                        <h6 class="my-0 font-weight-normal">Дата и время рассылки: {{object.start_mailing }}</h6>
                         {% if object.is_active == True %}
                         <h6 class="my-0 font-weight-normal">Активна</h6>
                         {% else %}
