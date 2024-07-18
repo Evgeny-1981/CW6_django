@@ -66,10 +66,10 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
     form_class = MailingForm
     success_url = reverse_lazy("mailings:mailings_list")
 
-    def get_form_kwargs(self):
-        kwargs = super(MailingUpdateView, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
+    # def get_form_kwargs(self):
+    #     kwargs = super(MailingUpdateView, self).get_form_kwargs()
+    #     kwargs['user'] = self.request.user
+    #     return kwargs
 
     def get_form_class(self):
         user = self.request.user
@@ -97,14 +97,12 @@ class MailingAttemptView(LoginRequiredMixin, ListView):
     """Контроллер для просмотра попыток рассылки"""
     model = MailingAttempt
 
-    # form_class = MailingAttemptForm
+    form_class = MailingAttemptForm
 
     # def get_queryset(self):
     #     queryset = super().get_queryset()
     #     mailing_pk = self.kwargs.get('pk')
-    #     print(mailing_pk)
     #     queryset = queryset.filter(mailing__pk=mailing_pk)
-    #     print(queryset)
     #     return queryset
     #
     # def get_context_data(self, **kwargs):
@@ -116,8 +114,8 @@ class MailingAttemptView(LoginRequiredMixin, ListView):
         context_data = super().get_context_data(*args, **kwargs)
         context_data['total'] = MailingAttempt.objects.all()
         context_data['total_count'] = MailingAttempt.objects.all().count()
-        context_data['successful_count'] = MailingAttempt.objects.filter(status='Отправлено').count()
-        context_data['unsuccessful_count'] = MailingAttempt.objects.filter(status='Ошибка отправки').count()
+        context_data['success_count'] = MailingAttempt.objects.filter(status='Отправлено').count()
+        context_data['error_count'] = MailingAttempt.objects.filter(status='Ошибка отправки').count()
         return context_data
 
 
