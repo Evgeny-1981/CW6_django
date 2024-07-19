@@ -1,0 +1,40 @@
+{% extends 'mailings/index.html' %}
+{% block content %}
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h3 align="left">Статистика рассылок</h3>
+</div>
+<div class="col-12 mb-1">
+    <p>Общее количество попыток рассылки: {{total_count}}</p>
+    <p>Количество успешных: {{success_count}}</p>
+    <p>Количество неуспешных: {{error_count}}</p>
+</div>
+<h3 align="center">Отчёт о попытках рассылки</h3>
+<div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+    <table class="table">
+        <thead>
+        <tr class="table-dark table-striped ">
+            <th scope="col">№ рассылки</th>
+            <th scope="col">Рассылка</th>
+            <th scope="col">Время попытки рассылки</th>
+            <th scope="col">Статус</th>
+            <th scope="col">Ответ сервера</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in object_list %}
+        <tr>
+            <td>{{object.mailing.pk}}</td>
+            <td>{{object.mailing.message}}</td>
+            <td>{{object.data_mailing}}</td>
+            {% if object.status == 'Отправлено' %}
+            <td class="table-success">Ok</td>
+            {% else %}
+            <td class="table-danger">Error</td>
+            {% endif %}
+            <td>{{object.answer}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

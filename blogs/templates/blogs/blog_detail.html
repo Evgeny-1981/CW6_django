@@ -1,0 +1,28 @@
+{% extends 'mailings/index.html' %}
+{% load my_tags %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <div class="card mb-4 box-shadow">
+                {% if object.preview %}
+                <img src="{{ object.preview | media_filter}}">
+                {% else %}
+                <img src="{% static 'images/default.jpg' %}">
+                {% endif %}
+                <div class="card-header">
+                    <h5 class="my-0 font-weight-normal">{{object.title}}</h5>
+                    <h6 class="my-0 font-weight-normal">{{object.content}}</h6>
+                    <h6 class="my-0 font-weight-normal">Запись создана: {{object.created_at}}</h6>
+                    <h6 class="my-0 font-weight-normal">Количество просмотров: {{object.count_views}}</h6>
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-primary" role="button" href="{% url 'mailings:home' %}">Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

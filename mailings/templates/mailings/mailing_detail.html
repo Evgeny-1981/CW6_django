@@ -1,0 +1,43 @@
+{% extends 'mailings/index.html' %}
+{% load my_tags %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h5 class="my-0 font-weight-normal">Номер рассылки: {{ mailing.id }}</h5>
+                    <h5 class="my-0 font-weight-normal">Дата и время следующей рассылки: {{ mailing.start_mailing }}</h5>
+                    <h5 class="my-0 font-weight-normal">Владелец рассылки: {{ mailing.owner_mailing }}</h5>
+                    <h5 class="my-0 font-weight-normal">Сообщение рассылки: {{ mailing.message }}</h5>
+                    {% if object.frequency == "Daily" %}
+                    <h5 class="my-0 font-weight-normal">Периодичность рассылки: Ежедневно</h5>
+                    {% elif object.frequency == "Weekly" %}
+                    <h5 class="my-0 font-weight-normal">Периодичность рассылки: Еженедельно</h5>
+                    {% elif object.frequency == "Monthly" %}
+                    <h5 class="my-0 font-weight-normal">Периодичность рассылки: Ежемесячно</h5>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {% if object.status == "Completed" %}
+                    <h6 class="card-title pricing-card-title">Статус рассылки: Завершена</h6>
+                    {% elif object.status == "Created" %}
+                    <h6 class="card-title pricing-card-title">Статус рассылки: Создана</h6>
+                    {% elif object.status == "Launched" %}
+                    <h6 class="card-title pricing-card-title">Статус рассылки: Запущена</h6>
+                    {% endif %}
+                    {% if object.is_active == True %}
+                    <h6 class="card-title pricing-card-title">Актуальность рассылки: Активна</h6>
+                    {% else %}
+                    <h6 class="card-title pricing-card-title">Актуальность рассылки: Неактивна</h6>
+                    {% endif %}
+                    <a class="btn btn-primary" role="button"
+                       href="{% url 'mailings:mailings_list' %}">Назад</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

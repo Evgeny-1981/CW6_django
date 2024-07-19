@@ -1,0 +1,37 @@
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal">Сервис рассылок "ПОЧТАЛЬОН"</h5>
+
+    <nav class="ms-5">
+        <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:home' %}">Главная</a>
+        {% if user.is_authenticated %}
+        {% if perms.mailings.View_any_mailing_lists and perms.mailings.Disable_mailing_lists and perms.users.View_the_list_of_service_users and perms.users.Block_users_of_the_service %}
+        <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:mailings_list' %}">Рассылки</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:users_list' %}">Пользователи сервиса</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:messages_list' %}">Сообщения</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:profile' %}">Мой профиль</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:logout' %}">Выйти</a>
+        {% endif %}
+        {% if not perms.blogs.Edit_entries and not perms.mailings.View_any_mailing_lists and not perms.mailings.Disable_mailing_lists and not perms.users.View_the_list_of_service_users and not perms.users.Block_users_of_the_service %}
+        <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:mailings_list' %}">Мои рассылки</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:attempts_info' %}">Лог</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:clients_list' %}">Мои клиенты</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'mailings:messages_list' %}">Мои сообщения</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:profile' %}">Мой профиль</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:logout' %}">Выйти</a>
+        {% endif %}
+        {% if perms.blogs.Edit_entries %}
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:profile' %}">Мой профиль</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:logout' %}">Выйти</a>
+        {% endif %}
+        {% else %}
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:register' %}">Регистрация</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'users:login' %}">Войти</a>
+        {% endif %}
+        {% if user.is_superuser %}
+        <a class="p-2 btn btn-outline-primary" href="/admin/">Админ панель</a>
+        {% endif %}
+    </nav>
+     {% if user.is_authenticated %}
+    <h6 class="align-items-right px-md-4 mb-4">Добро пожаловать: {{ user.first_name }} </h6>
+     {% endif %}
+</div>
