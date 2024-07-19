@@ -36,7 +36,7 @@ class BlogCreateView(CreateView):
 
     def get_form_class(self):
         user = self.request.user
-        if user.is_staff:
+        if user.has_perm('blogs.Edit_entries'):
             return BlogModeratorForm
         else:
             raise PermissionDenied
@@ -55,7 +55,7 @@ class BlogUpdateView(UpdateView):
 
     def get_form_class(self):
         user = self.request.user
-        if user.is_staff:
+        if user.has_perm('blogs.Edit_entries'):
             return BlogModeratorForm
         else:
             raise PermissionDenied
@@ -69,7 +69,7 @@ class BlogDeleteView(DeleteView):
 
     def get_form_class(self):
         user = self.request.user
-        if user.is_staff:
+        if user.has_perm('blogs.Edit_entries'):
             return BlogModeratorForm
         else:
             raise PermissionDenied

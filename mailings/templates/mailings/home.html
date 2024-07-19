@@ -3,7 +3,7 @@
 {% load my_tags %}
 {% block content %}
 <div class="row text-center">
-{% if user.is_staff %}
+{% if perms.blogs.Edit_entries %}
     <a class="btn mb-3 btn-lg btn-block btn-outline-primary" href="{% url 'blogs:blog_create'%}"
        role="button">Добавить запись</a>
 {% endif %}
@@ -31,7 +31,7 @@
                     <div class="mb-1 text-body-secondary">Количество просмотров: {{ object.count_views }}</div>
                     <p class="card-text mb-auto">{{ object.content | truncatechars:150 }}</p>
                     <a class="btn btn-primary" role="button" href="{% url 'blogs:blog_info' object.slug %}">Подробнее</a>
-                    {% if user.is_staff %}
+                    {% if perms.blogs.Edit_entries %}
                         <a class="btn btn-primary" role="button" href="{% url 'blogs:blog_update' object.slug %}">Редактировать</a>
                         <a class="btn btn-danger" role="button" href="{% url 'blogs:blog_delete' object.slug %}">Удалить</a>
                     {% endif %}

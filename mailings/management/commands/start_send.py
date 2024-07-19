@@ -1,6 +1,4 @@
-import datetime
 import smtplib
-# import pytz
 from django.core.mail import send_mail
 from django.core.management import BaseCommand
 from config import settings

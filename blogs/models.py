@@ -3,7 +3,8 @@ from django.utils.text import slugify
 from users.models import User
 
 NULLABLE = {"blank": True, "null": True}
-
+Permissions = [('View_any_entries', 'Просматривать любые записи'),
+               ('Edit_entries', 'Редактировать запись'), ]
 
 class Blog(models.Model):
     """Модель для блога"""
@@ -22,6 +23,7 @@ class Blog(models.Model):
         verbose_name = "блог"
         verbose_name_plural = "блоги"
         ordering = ("count_views",)
+        permissions = Permissions
 
     def __str__(self):
         return f"{self.title}, {self.content}"
