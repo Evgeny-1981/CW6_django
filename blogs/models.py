@@ -6,6 +6,7 @@ NULLABLE = {"blank": True, "null": True}
 Permissions = [('View_any_entries', 'Просматривать любые записи'),
                ('Edit_entries', 'Редактировать запись'), ]
 
+
 class Blog(models.Model):
     """Модель для блога"""
     title = models.CharField(max_length=120, verbose_name="заголовок", unique=True)
