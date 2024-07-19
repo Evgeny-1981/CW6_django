@@ -39,7 +39,7 @@
 Запуск проекта.
 
 1. Переименуйте файл .env.sample в .env и заполните необходимые данные
-2. Создать базу данных в PostgreSQL CW6_django
+2. Создать базу данных CW6_django в PostgreSQL 
 3. Выполнить команду python3 manage.py migrate(для Ubuntu)
 4. Создать суперпользователя выполнив команду python3 manage.py csuser (admin@sky.pro, 1238)
 5. Запустите Redis: sudo service redis-server start
