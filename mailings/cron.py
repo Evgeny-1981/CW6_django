@@ -1,9 +1,7 @@
 import datetime
 import smtplib
-
 import pytz
 from django.core.mail import send_mail
-
 from config import settings
 from mailings.models import Mailing, MailingAttempt
 
@@ -26,7 +24,7 @@ def send_message(mailing):
         if response == 1:
             # При успешной отправке сохраняем информацию о попытке в базу данных
             mailing.status = 'Launched'
-            answer = 'Успешно отправлено'
+            answer = 'Рассылка отправлена'
             MailingAttempt.objects.create(status='Отправлено', answer=answer, mailing=mailing)
 
             # Устанавливаем дату следующей отправки письма
@@ -38,14 +36,11 @@ def send_message(mailing):
                 mailing.start_mailing += datetime.timedelta(days=30)
             mailing.save()
 
-    except smtplib.SMTPException as error:
+    except smtplib.SMTPException as e:
         # При ошибке отправки записываем полученный ответ сервера
-        MailingAttempt.objects.create(status='Ошибка отправки', answer=error, mailing=mailing)
-
-    # else:
-    #     mailing.status = 'Launched'
-    #     answer = 'Не отправлено'
-    #     MailingAttempt.objects.create(status='Ошибка', answer=answer, mailing=mailing)
+        status = "Не отправлено"
+        error = f"Ошибка при отправке письма: {str(e)}"
+        MailingAttempt.objects.create(status=status, answer=error, mailing=mailing)
 
 
 def send_mailings():
