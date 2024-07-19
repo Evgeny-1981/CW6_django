@@ -51,7 +51,8 @@
 4. Создать суперпользователя выполнив команду python3 manage.py csuser (admin@sky.pro, 1238)
 5. Запустите Redis: sudo service redis-server start
 6. Запустите проект python3 manage.py runserver
-7. Перейти по адресу в веб-браузер http://127.0.0.1:8000
-8. Начать работу
+7. Добавить задачу командой python3 manage.py crontab add
+8. Перейти по адресу в веб-браузер http://127.0.0.1:8000
+9. Начать работу
 
 
