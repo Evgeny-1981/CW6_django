@@ -75,7 +75,7 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
         user = self.request.user
         if user == self.object.owner_mailing:
             return MailingForm
-        elif user.has_perm('mailings.Disable_mailing_lists'):
+        elif user.has_perm('mailings.Disable_mailing_lists') or user.is_staff:
             return MailingModeratorForm
         else:
             raise PermissionDenied

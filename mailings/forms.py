@@ -60,6 +60,10 @@ class MailingModeratorForm(FormMixin, ModelForm):
         model = Mailing
         fields = ('is_active',)
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(MailingModeratorForm, self).__init__(*args, **kwargs)
+
 
 class MailingAttemptForm(FormMixin, ModelForm):
     class Meta:
