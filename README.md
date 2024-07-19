@@ -46,13 +46,15 @@
 Запуск проекта.
 
 1. Переименуйте файл .env.sample в .env и заполните необходимые данные
-2. Создать базу данных CW6_django в PostgreSQL 
-3. Выполнить команду python3 manage.py migrate(для Ubuntu)
-4. Создать суперпользователя выполнив команду python3 manage.py csuser (admin@sky.pro, 1238)
-5. Запустите Redis: sudo service redis-server start
-6. Запустите проект python3 manage.py runserver
-7. Добавить задачу командой python3 manage.py crontab add
-8. Перейти по адресу в веб-браузер http://127.0.0.1:8000
-9. Начать работу
+2. Создать виртуальное окружение.
+3. Установить все зависимости виртуального окружения.
+4. Создать базу данных CW6_django в PostgreSQL
+5. Выполнить команду python3 manage.py migrate(для Ubuntu)
+6. Создать суперпользователя выполнив команду python3 manage.py csuser (admin@sky.pro, 1238)
+7. Запустите Redis: sudo service redis-server start
+8. Запустите проект python3 manage.py runserver
+9. Добавить задачу командой python3 manage.py crontab add
+10. Перейти по адресу в веб-браузер http://127.0.0.1:8000
+11. Начать работу
 
 
